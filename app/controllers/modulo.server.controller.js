@@ -29,21 +29,6 @@ exports.read = function(req, res) {
 			res.jsonp(modulos);
 		}
 	});
-
-	//var modulos = Modulo;
-	/*
-		Consulta.find().sort('-created').populate('user', 'displayName').exec(function(err, consultas) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(consultas);
-		}
-	});
-
-	*/
-	//res.jsonp('There was me, that is alex');
 };
 
 /**

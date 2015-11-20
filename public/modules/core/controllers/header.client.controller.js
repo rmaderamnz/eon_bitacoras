@@ -10,9 +10,9 @@ angular.module('core').controller('HeaderController', ['$scope', '$http','Authen
 		$scope.setModulos = function(){
 			 $http.get('/modulos' ).success(function(response) {
 					for(var k in response) {
-						$scope.modulos.push(response[k].nombre);
+						$scope.modulos.push(response[k]);
 					}
-
+					console.log($scope.modulos);
 			}).error(function(response) {
 				$scope.error = response.message;
 			});

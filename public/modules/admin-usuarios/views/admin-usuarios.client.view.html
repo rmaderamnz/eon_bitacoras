@@ -1,0 +1,78 @@
+<section data-ng-controller="AdminUsuariosController">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="panel-heading" >
+				<h1 class="panel-title">Administracion de usuarios</h1>						
+			</div>
+			<div class="col-md-7">
+				<div class="panel-heading" >
+					<h3 class="panel-title">Lista de usuarios</h3>	
+					<table class="table table-striped">
+						<th>Usuario</th>
+						<th>Nombre</th>
+						<th>Correo</th>
+						<th>Consultar</th>
+						<tr ng-repeat="usuario in usuarios">
+							<td>
+								{{usuario.username}}
+							</td>
+							<td>
+								{{usuario.firstName}} {{usuario.lastName}}
+							</td>
+							<td>
+								{{usuario.email}}
+							</td>
+							<td>
+								<p class="glyphicon glyphicon-ok"></p>
+								<p class="glyphicon glyphicon-ok"></p>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				<button class="btn" ng-click="ModalOpen()"><span class="glyphicon glyphicon-plus GlyphButton"></span> Registrar usuario</button>
+			</div>
+			<div class="col-md-5">
+				<div class="panel-heading" >
+					<h3 class="panel-title">Privilegios</h3>	
+					<small>No se ha seleccionado un usuario</small>					
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--
+	<script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li ng-repeat="item in items">
+                    <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+                </li>
+            </ul>
+            Selected: <b>{{ selected.item }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+
+
+
+	  <modal title="Login form" visible="showModal">
+    <form role="form">
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" />
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </modal>
+	-->
+</section>

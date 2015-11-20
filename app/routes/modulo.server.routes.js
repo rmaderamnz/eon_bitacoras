@@ -2,7 +2,7 @@
 
 module.exports = function(app) {
 
-	//var users = require('../../app/controllers/users.server.controller');
+	var users = require('../../app/controllers/users.server.controller');
 	var modulo = require('../../app/controllers/modulo.server.controller');
 
 	app.route('/modulos').get(modulo.read);
