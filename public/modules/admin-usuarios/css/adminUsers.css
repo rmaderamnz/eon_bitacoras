@@ -1,6 +1,6 @@
-.botonBeneficiarios{
+.GlyphButton{
 	cursor: pointer;
-	color: green;
-	font-size: 20px;
+	font-size: 15px;
 	display: inline-table;
 }
+

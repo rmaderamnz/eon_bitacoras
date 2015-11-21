@@ -19,7 +19,7 @@ exports.create = function(req, res) {
  * Show the current Modulo
  */
 exports.read = function(req, res) {
-
+	//Lista de modulos
 	Modulo.find().exec(function(err, modulos){
 		if (err) {
 			return res.status(400).send({

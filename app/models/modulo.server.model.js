@@ -18,6 +18,10 @@ var ModuloSchema = new Schema({
 	},
 	vista:{
 		type: String
+	},
+	publico:{
+		type: Boolean,
+		default: true
 	}
 });
 

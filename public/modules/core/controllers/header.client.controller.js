@@ -12,7 +12,6 @@ angular.module('core').controller('HeaderController', ['$scope', '$http','Authen
 					for(var k in response) {
 						$scope.modulos.push(response[k]);
 					}
-					console.log($scope.modulos);
 			}).error(function(response) {
 				$scope.error = response.message;
 			});

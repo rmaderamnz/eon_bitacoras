@@ -10,27 +10,45 @@ var mongoose = require('mongoose'),
  * Privilegios Schema
  */
 var PrivilegiosSchema = new Schema({
-	nombre:{
-		type: String,
-		required: 'Es necesario especificar un nombre de privilegio'
-	},
 	tipo:{
-		type: String,
-		required: 'Es necesario especificar un tipo (Lectura o escritura)'
-	},
-	descripcion:{
-		type: String,
-		default: ''
+		type: [{
+			type: String,
+			enum: ['create','read','update','delete']
+		}],
+		required: 'Es necesario especificar un tipo de privilegio'
 	},
 	usuario:{
 		type: Schema.ObjectId,
 		ref: 'User'
-	}
+	},
+	modulo:{
+		type: Schema.ObjectId,
+		ref: 'Modulo'
+	}/*,
+	tareas:{
+		type: Schema.ObjectId,
+		ref: 'User'
+	},
+	proyectos:{
+		type: Schema.ObjectId,
+		ref: 'User'
+	}*/
+	
 });
 
 mongoose.model('Privilegios', PrivilegiosSchema);
 
 /*
+roles: {
+		type: [{
+			type: String,
+			enum: ['user', 'admin']
+		}],
+		default: ['user']
+	},
+
+
+
 //consulta-tareas
 USUARIO!;
 {
