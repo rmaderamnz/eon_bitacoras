@@ -10,8 +10,19 @@ var mongoose = require('mongoose'),
  * Proyectos Schema
  */
 var ProyectosSchema = new Schema({
-	// Proyectos model fields   
-	// ...
+	nombre:{
+		type: String
+	},
+	estado:{
+		type: Boolean
+	},
+	vista:{
+		type: String
+	},
+	publico:{
+		type: Boolean,
+		default: true
+	}
 });
 
 mongoose.model('Proyectos', ProyectosSchema);
