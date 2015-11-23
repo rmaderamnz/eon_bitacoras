@@ -1,0 +1,45 @@
+<section>
+	<form name="PermissionForm" data-ng-submit="savePrivilegios()" novalidate autocomplete="off">
+		<div class="modal-header">
+			<h3 class="modal-title">Asignar permisos</h3>
+		</div>
+	    <div class="modal-body">
+		   	<div class="form-group container">
+				<div class="form-group">
+					<label>Privilegios:</label>&nbsp;
+					 <div class="btn-group"> 
+				        <input type="checkbox" ng-model="checkModel.create" uib-btn-checkbox>&nbsp;Creacion</label> 
+				        <input type="checkbox" ng-model="checkModel.read" uib-btn-checkbox>&nbsp;Lectura</label>
+				        <input type="checkbox" ng-model="checkModel.update" uib-btn-checkbox>&nbsp;Modificacion</label>
+				        <input type="checkbox" ng-model="checkModel.delete" uib-btn-checkbox>&nbsp;Borrar</label>
+				    </div>
+				    <div class="input-group ">
+				    	<!--<label>Referencia:</label>&nbsp;-->
+				    	<uib-tabset>
+    						<uib-tab heading="Static title">Static content</uib-tab>
+    						<uib-tab heading="Static title">Static content</uib-tab>
+    						<uib-tab heading="Static title">Static content</uib-tab>
+    					</uib-tabset>
+				    	<!--<select class="form-control" id="ComboReferencias">
+						    <option>1</option>
+						    <option>2</option>
+						    <option>3</option>
+						    <option>4</option>
+					  	</select>-->
+				    </div>
+				    <div class="input-group ">
+				    	<label>Tipo de permiso:</label>&nbsp;
+				    	<select class="form-control" id="ComboTipo">
+						    <option>Acceso</option>
+						    <option>Restriccion</option>
+					  	</select>
+				    </div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" type="submit">Asignar permisos</button>
+			<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+		</div>
+	</form>
+</section>

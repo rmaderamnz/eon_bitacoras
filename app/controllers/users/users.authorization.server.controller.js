@@ -21,6 +21,20 @@ exports.userByID = function(req, res, next, id) {
 	});
 };
 
+
+exports.getUsersInfo = function(req, res) {
+	User.find({},{ username : 1, firstName : 1, lastName : 1, email: 1 } ).exec(function(err, usuarios){
+		if (err) {
+			return res.status(400).send({
+				message: 'Ocurrio un error'//errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(usuarios);
+		}
+	});
+};
+
+
 /**
  * Require login routing middleware
  */

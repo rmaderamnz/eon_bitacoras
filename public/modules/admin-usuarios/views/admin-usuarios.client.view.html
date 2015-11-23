@@ -1,0 +1,53 @@
+<section data-ng-controller="AdminUsuariosController">
+	<div class="panel panel-default" style="overflow: hidden;">
+		<div class="panel-body">
+			<div class="panel-heading" >
+				<h1 class="panel-title">Administracion de usuarios</h1>						
+			</div>
+			<div class="col-md-6">
+				<div class="panel-heading" >
+					<h3 class="panel-title">Lista de usuarios</h3>	
+				</div>
+				<table class="table table-striped">
+					<th>Usuario</th>
+					<th>Nombre</th>
+					<th>Correo</th>
+					<th>Consultar</th>
+					<tr ng-repeat="usuario in usuarios">
+						<td>
+							{{usuario.username}}
+						</td>
+						<td>
+							{{usuario.firstName}} {{usuario.lastName}}
+						</td>
+						<td>
+							{{usuario.email}}
+						</td>
+							<td class="text-center">
+							<p title="Consulta privilegios" class="glyphicon glyphicon-list GlyphButton" ng-click="setPrivilegios( '{{usuario._id}}' , '{{ usuario.firstName }} {{ usuario.lastName }}' )"></p>
+							<p title="Eliminar usuario" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ></p>
+						</td>
+					</tr>
+				</table>					
+				<button class="btn btn-default" ng-click="ModalUsuariosOpen()"><span class="glyphicon glyphicon-user"></span> Registrar usuario</button>
+			</div>
+			<div class="col-md-6">
+				<div class="panel-heading">
+					<h3 class="panel-title">Privilegios</h3>				
+				</div>
+				<div class="container" ng-show="nombre_usuario=== 'N/A'">
+					<small>No se ha seleccionado un usuario</small>					
+				</div>
+				<div class="container col-md-12" ng-show="nombre_usuario!= 'N/A'">
+					<small> Privilegios de {{nombre_usuario}}:</small>			
+					<table class="table table-striped">
+						<th>Area</th>
+						<th>Privilegios</th>
+						<th>Quitar</th>
+					</table>
+					<button class="btn btn-default btn-sm" ng-click="ModalPrivilegiosOpen()"><span class="glyphicon glyphicon-plus" style="color:green" ></span> Agregar privilegios</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

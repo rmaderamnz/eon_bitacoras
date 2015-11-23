@@ -4,13 +4,19 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+	Privilegio = mongoose.model('Privilegios'),
     _ = require('lodash');
 
 /**
  * Create a Privilegio
  */
 exports.create = function(req, res) {
-
+	var valores = req.body;
+	res.jsonp(valores);
+	/*
+	var consulta = new Privilegio();
+	consulta.save();
+	*/
 };
 
 /**
