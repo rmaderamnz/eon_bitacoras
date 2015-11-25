@@ -1,5 +1,5 @@
-<section>
-	<form name="TagForm" ng-submit="NuevaEtiqueta()" autocomplete="off">
+<section ng-init="tag.color='green'">
+	<form name="TagForm" ng-submit="NuevaEtiqueta()"  autocomplete="off">
 		<div class="modal-header">
 			<h3 class="modal-title">Nueva etiqueta</h3>
 		</div>
@@ -15,14 +15,16 @@
 				</div>
 				<div class="form-group">
 					<label>Color de la etiqueta</label> <br>
-					<label class="radio-inline"><input type="radio" name="optradio" value="red" data-ng-model="tag.color" checked="checked">Rojo</label>
-					<label class="radio-inline"><input type="radio" name="optradio" value="yellow" data-ng-model="tag.color">Amarillo</label>
-					<label class="radio-inline"><input type="radio" name="optradio" value="green" data-ng-model="tag.color" >Verde</label>
+					<md-radio-group layout="row" data-ng-model="tag.color">
+				    	<md-radio-button value="red" >Rojo</md-radio-button>
+				    	<md-radio-button value="yellow" > Amarillo </md-radio-button>
+				    	<md-radio-button value="green" >Verde</md-radio-button>
+				    </md-radio-group>
 				</div>
 			</fieldset>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-success" type="submit">Ingresar usuario</button>
+			<button class="btn btn-success" type="submit">Crear etiqueta</button>
 			<button class="btn btn-danger" type="button" ng-click="cancel()">Cancelar</button>
 		</div>
 	</form>
