@@ -1,34 +1,43 @@
 <div class="container" data-ng-controller="HeaderController">
 	<nav class="navbar navbar-fixed-top navbar-inverse" data-ng-show="authentication.user">
 		<div class="container">
-			<a class="navbar-brand" href="/#!">Bitacoras EON Core</a>
+			<a class="navbar-brand" href="/#!/">Bitacoras EON Core</a>
 			<div style="padding-top: 0.5%;">
 				<ul class="list-inline nav navbar-nav">
-				 	<li ng-repeat="modulo in modulos" > 
-				 		<div class="dropdown">
-					 		<button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown"> {{modulo.nombre}} <span class="caret"></span>
-					 		</button> 
-					 		<ul class="dropdown-menu">
-						    <li><a href="/#!/{{modulo.vista}}">Consultar</a></li>
-						  </ul>
-						</div>
-					</li>
+					<li uib-dropdown ng-repeat="modulo in modulos" >
+					    <button id="single-button" type="button" class="btn btn-info" uib-dropdown-toggle> {{modulo.nombre}}  <span class="caret"></span>
+					      </button>
+					    <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+					    	<li><a href="/#!/{{modulo.vista}}">Consultar</a></li>
+					    </ul>
+				    </li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-	           		<li>
-	           			<div class="dropdown">
-	           				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> {{authentication.user.username}} <span class="glyphicon glyphicon-user"></span> <span class="caret"></span>
-	           					
-					 		</button> 
-					 		<ul class="dropdown-menu">
-						    	<li><a href="/auth/signout">Cerrar sesion</a></li>
-						    </ul>
-	           			</div>
+	           		<li uib-dropdown>
+						<button class="btn btn-primary" type="button" uib-dropdown-toggle> {{authentication.user.username}} <span class="glyphicon glyphicon-user"></span> <span class="caret"></span> </button> 
+						<ul class="dropdown-menu">
+							<li><a href="/auth/signout">Cerrar sesion</a></li>
+						</ul>
 	           		</li>
 	          	</ul>
 			</div>
 		</div>
 	</nav>
+</div>
+
+	<!-- <div class="btn-group" uib-dropdown is-open="status.isopen">
+      <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+        Button dropdown <span class="caret"></span>
+      </button>
+      <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+        <li role="menuitem"><a href="#">Action</a></li>
+        <li role="menuitem"><a href="#">Another action</a></li>
+        <li role="menuitem"><a href="#">Something else here</a></li>
+        <li class="divider"></li>
+        <li role="menuitem"><a href="#">Separated link</a></li>
+      </ul>
+    </div>
+
 	<!--<div class="navbar-header">
 		<button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
 			<span class="sr-only">Toggle navigation</span>
@@ -85,4 +94,3 @@
 			</li>
 		</ul>
 	</nav>-->
-</div>

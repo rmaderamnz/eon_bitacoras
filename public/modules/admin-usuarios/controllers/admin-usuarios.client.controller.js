@@ -150,6 +150,7 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 				$scope.error = response.message;
 			});
 		};
+
 		$scope.getUsuarios();
 	}
 

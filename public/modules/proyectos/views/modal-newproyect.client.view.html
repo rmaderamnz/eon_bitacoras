@@ -1,0 +1,31 @@
+<section>
+	<form name="ProyectForm" ng-submit="NuevoProyecto()" autocomplete="off">
+		<div class="modal-header">
+			<h3 class="modal-title">{{header_text}}</h3>
+		</div>
+		<div class="modal-body">
+			<fieldset>
+				<div class="form-group">
+					<label for="firstName">Nombre</label>
+					<input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="proyect.nombre" placeholder="Nombre">
+				</div>
+				<div class="form-group">
+					<label>Descripcion</label>
+					<textarea class="form-control" style="width:100%" required data-ng-model="proyect.descripcion" placeholder="Descripcion basica del proyecto"></textarea>
+				</div>
+			
+				<div>
+					<label>Tipo de proyecto: </label>
+					<md-switch ng-model="proyect.publico" aria-label="Switch 1" class="md-block"> 
+						<b ng-show="proyect.publico">Publico </b>
+						<b ng-show="!proyect.publico">Privado </b>
+					</md-switch>
+				</div>
+			</fieldset>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-success" type="submit">{{submit_text}}</button>
+			<button class="btn btn-danger" type="button" ng-click="cancel()">Cancelar</button>
+		</div>
+	</form>
+</section>

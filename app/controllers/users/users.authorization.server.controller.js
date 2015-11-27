@@ -21,6 +21,9 @@ exports.userByID = function(req, res, next, id) {
 	});
 };
 
+exports.read = function(req, res) {
+	res.jsonp(req.user);
+};
 
 exports.getUsersInfo = function(req, res) {
 	User.find({},{ username : 1, firstName : 1, lastName : 1, email: 1 } ).exec(function(err, usuarios){
@@ -33,6 +36,24 @@ exports.getUsersInfo = function(req, res) {
 		}
 	});
 };
+
+
+exports.getUserByID = function(req, res) {
+	var id = req.body.id;
+	User.findOne({
+		_id: id
+	}).exec(function(err, user) {
+		if(err){
+			return res.status(400).send({
+				message: 'Ocurrio un error'//errorHandler.getErrorMessage(err)
+			});
+		}else{
+			res.jsonp(user);
+		}
+
+	});
+};
+
 
 
 /**

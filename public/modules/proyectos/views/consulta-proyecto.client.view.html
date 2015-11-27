@@ -1,0 +1,63 @@
+<section data-ng-controller="ConsultaProyectoController">
+	<div class="panel panel-default" style="overflow: hidden;">
+		<div class="panel-heading" >
+			<h1 class="panel-title">Proyecto : {{proyecto.nombre}} <md-button class="md-warn" ng-click="volver()">Regresar</md-button> </h1>
+		</div>
+		<div class="panel-body">
+			<div class="container">
+				<div class="col-md-6">
+					<fieldset>
+						<legend>Datos del proyecto:</legend>
+						<label>Nombre</label>
+						<input class="form-control" readonly value="{{proyecto.nombre}}">
+						<label>Descripcion</label>
+						<textarea class="form-control" readonly style="width:100%" > {{proyecto.descripcion}} </textarea>
+						<small>Fecha de creacion: {{ proyecto.creacion | date:'yyyy-MM-dd' }} </small> <br>
+						<small>Creado por: {{proyecto.nombreusuario}}</small>
+					</fieldset>
+				</div>
+				<div class="col-md-5">
+					<fieldset>
+						<legend>Etiquetas del proyecto</legend>	
+						<div class="row">
+							<div class="col-md-12">
+								<button class="btn btn-success pull-right bt-sm" ng-click="ModalEtiquetasOpen( '{{proyecto._id}}' )"><span class="glyphicon glyphicon-plus" style="color:green" ></span> Nueva etiqueta</button>
+							</div>
+						</div>
+						<br>
+						<div class="container col-md-12">
+							<uib-accordion close-others="true" ng-repeat="etiqueta in etiquetas">
+								<uib-accordion-group heading="{{etiqueta.nombre}}" panel-class="{{etiqueta.tagclass}}">
+									<small><i>{{ etiqueta.creacion | date:'yyyy-MM-dd HH:mm:ss' }}</i> - <b> {{etiqueta.nombreusuario}} </b></small>
+							   		<p> {{etiqueta.contenido}} </p>
+							    	<button class="btn pull-right" ng-click="borrarEtiqueta( '{{ etiqueta._id }}' )">Descartar</button>
+								</uib-accordion-group>
+							</uib-accordion>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<br>
+			<div class="panel panel-default">
+				<div class="panel-heading" >
+					<h1 class="panel-title">Tareas asignadas</h1>
+				</div>
+				<div class="panel-body">
+					
+					<div>
+						<div class="row">
+							<label>Ver: </label>
+						</div>
+						<table class="table table-striped">
+							<th>Tarea</th>
+							<th>Tipo</th>
+							<th>Correo</th>
+							<th>Consultar</th>
+						</table>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
