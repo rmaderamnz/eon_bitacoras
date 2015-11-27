@@ -15,6 +15,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 		state('home', {
 			url: '/',
 			templateUrl: 'modules/core/views/home.client.view.html'
+		}).
+		state('dashboard', {
+			url: '/main',
+			templateUrl: 'modules/core/views/dashboard.client.view.html'
 		});
 	}
 ]);

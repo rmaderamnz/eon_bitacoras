@@ -104,6 +104,7 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 					$scope.NuevoProyecto = function() {
 						if(parametros !== undefined){
 							$http.put('/proyectos/' + parametros , $scope.proyect).success(function(response) {
+								$uibModalInstance.dismiss('cancel');
 								var alert = $mdDialog.alert()
 								    .title('Exito')
 								    .content('El proyecto fue actualizado exitosamente')
@@ -113,7 +114,7 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 									.finally(function() {
 										alert = undefined;
 									});
-								$uibModalInstance.dismiss('cancel');
+								
 							}).error(function(response) {
 								$scope.error = response.message;
 							});
