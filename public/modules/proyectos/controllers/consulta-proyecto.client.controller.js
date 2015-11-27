@@ -11,7 +11,7 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 		};
 
 		$scope.getInfoProyecto = function(){
-			 $http.post('/proyectos/view/' + $stateParams.proyectoId ).success(function(response) {
+			 $http.post('/proyectos/' + $stateParams.proyectoId ).success(function(response) {
 			 	$scope.proyecto = response;
 			 	$scope.getNombreUsuario($scope.proyecto.usuario);
 			}).error(function(response) {
@@ -22,17 +22,13 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 			 $http.get('/users/getUser/' + id ).success(function(response) {
 			 	if(tag !== undefined){
 			 		$scope.etiquetas[tag].nombreusuario = response.username;
-			 		//console.log($scope.etiquetas[tag].nombreusuario);
 			 	}else{
 			 		$scope.proyecto.nombreusuario = response.username;
 			 	}
 			}).error(function(response) {
+				console.log(response);
 				//$scope.error = response.message;
 			});
-		};
-
-		$scope.formatDate = function(){
-
 		};
 
 		$scope.getInfoProyecto();

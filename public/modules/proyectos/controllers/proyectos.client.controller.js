@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('proyectos').controller('ProyectosController', ['$scope','$uibModal', '$http',
-	function($scope, $uibModal, $http) {
+angular.module('proyectos').controller('ProyectosController', ['$scope','$uibModal', '$http','$mdDialog', '$mdMedia', 
+	function($scope, $uibModal, $http, $mdDialog, $mdMedia) {
 		$scope.proyectos = [];
 
 		$scope.getProyectos = function(){
@@ -23,37 +23,117 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 			 $http.get('/users/getUser/' + id ).success(function(response) {
 			 	$scope.proyectos[index].usuario = response.username;
 			}).error(function(response) {
+				console.log(response);
 				//$scope.error = response.message;
 			});
 		};
 
 
-		// /proyectos/list
+		$scope.borrarProyecto = function(ev, idProyecto, nombreProyecto) {
+			console.log(idProyecto);
+		    var alert = $mdDialog.confirm()
+		        .title('Borrar proyecto')
+		        .content('¿Desea borrar permanentemente el proyecto "'+nombreProyecto+'"? ')
+		        .ok('Si')
+		        .cancel('No');
+		    $mdDialog
+		        .show( alert )
+		        .then(function() {
+		        	//Si
+		        	$http.delete('/proyectos/' + idProyecto ).success(function(response) {
+		        		alert = $mdDialog.alert()
+					        .title('Proyecto borrado exitosamente')
+					        .content('El proyecto fue borrado exitosamente')
+					        .ok('Cerrar');
+					   	$mdDialog
+							.show( alert )
+							.finally(function() {
+								alert = undefined;
+							});
+						$scope.getProyectos();
+					}).error(function(response) {
+
+						console.log(response);
+						alert = $mdDialog.alert()
+					        .title('Error')
+					        .content('Ha ocurrido un error')
+					        .ok('Cerrar');
+					    $mdDialog
+							.show( alert )
+							.finally(function() {
+								alert = undefined;
+							});
+					});
+					 
+		        }, function(){
+		        	//No
+		          	
+		        });
+	  	};
 		
-		$scope.ModalProyectoOpen = function () {
+		$scope.ModalProyectoOpen = function ( parametros ) {
+
 		    var uibModalInstance = $uibModal.open({
 		    	animation: true,
 				templateUrl: 'modules/proyectos/views/modal-newproyect.client.view.html',
 				controller: function($scope, $uibModalInstance){
+					$scope.submit_text = 'Crear proyecto';
+					$scope.header_text = 'Nuevo proyecto';
+					//$scope.proyect = [];
+
+					if(parametros !== undefined){
+
+						$scope.submit_text = 'Actualizar proyecto';
+						$scope.header_text = 'Proyecto';
+						$http.post('/proyectos/' + parametros ).success(function(response) {
+						 	$scope.proyect = response;
+						}).error(function(response) {
+							var alert = $mdDialog.alert()
+							        .title('Error')
+							        .content('Ha ocurrido un error al cargar los datos del proyecto')
+							        .ok('Cerrar');
+							   	$mdDialog
+									.show( alert )
+									.finally(function() {
+										alert = undefined;
+									});
+							console.log(response);
+						});
+					}
 
 					$scope.NuevoProyecto = function() {
-						$http.post('/proyectos/save', $scope.proyect).success(function(response) {
-							console.log(response);
-							$uibModalInstance.dismiss('cancel');
-							//$location.path('/');
-						}).error(function(response) {
-							$scope.error = response.message;
-						});
-					};
-
-					$scope.ActualizarProyecto = function() {
-						$http.post('/proyectos/update', $scope.proyect).success(function(response) {
-							console.log(response);
-							$uibModalInstance.dismiss('cancel');
-							//$location.path('/');
-						}).error(function(response) {
-							$scope.error = response.message;
-						});
+						if(parametros !== undefined){
+							$http.put('/proyectos/' + parametros , $scope.proyect).success(function(response) {
+								var alert = $mdDialog.alert()
+								    .title('Exito')
+								    .content('El proyecto fue actualizado exitosamente')
+								    .ok('Cerrar');
+								$mdDialog
+									.show( alert )
+									.finally(function() {
+										alert = undefined;
+									});
+								$uibModalInstance.dismiss('cancel');
+							}).error(function(response) {
+								$scope.error = response.message;
+							});
+						}else{
+							$http.post('/proyectos/save', $scope.proyect).success(function(response) {
+								//console.log(response);
+								var alert = $mdDialog.alert()
+							        .title('Exito')
+							        .content('El proyecto fue creado exitosamente')
+							        .ok('Cerrar');
+							   	$mdDialog
+									.show( alert )
+									.finally(function() {
+										alert = undefined;
+									});
+							}).error(function(response) {
+								$scope.error = response.message;
+							});
+						}
+						$uibModalInstance.dismiss('cancel');
 					};
 
 					$scope.cancel = function () {

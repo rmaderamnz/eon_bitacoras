@@ -6,14 +6,12 @@ module.exports = function(app) {
 
 	app.route('/proyectos/list').get(proyect.getList);
 	app.route('/proyectos/save').post(proyect.create);
+	app.route('/proyectos/update').post(proyect.update);
 
-	app.route('/proyectos/view/:proyectId').post(proyect.read);
+	app.route('/proyectos/:proyectId')
+		.post(proyect.read)
+		.delete(proyect.delete)
+		.put(proyect.update);
 
-	/*
-	app.route('/consultas/:consultaId')
-		.get(consultas.read)
-		.put(users.requiresLogin, consultas.hasAuthorization, consultas.update)
-		.delete(users.requiresLogin, consultas.hasAuthorization, consultas.delete);
-	*/
 	app.param('proyectId', proyect.proyectByID);
 };

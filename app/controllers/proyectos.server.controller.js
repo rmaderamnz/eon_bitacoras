@@ -59,19 +59,42 @@ exports.proyectByID = function(req, res, next, id) {
  * Update a Proyecto
  */
 exports.update = function(req, res) {
-
+	Proyecto.findOne({
+		_id: req.params.proyectId
+	}).exec(function(err, proyect) {
+		if (err) { return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			}); }
+		proyect.nombre = req.body.nombre;
+		proyect.descripcion = req.body.descripcion;
+		proyect.publico = req.body.publico;
+		proyect.save(function(error){
+            if(error){res.send(error);
+            }
+            res.json(proyect);
+        });
+	});
 };
 
 /**
  * Delete an Proyecto
  */
 exports.delete = function(req, res) {
-
+	Proyecto.findOne({
+		_id: req.params.proyectId
+	}).exec(function(err, proyect) {
+		if (err) { return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			}); }
+		proyect.remove(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(proyect);
+			}
+		});
+	});
 };
 
-/**
- * List of Proyectos
- */
-exports.list = function(req, res) {
-
-};

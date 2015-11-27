@@ -20,7 +20,7 @@ var EtiquetasSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
-	estado:{
+	estado:{ 
 		type: Boolean,
 		default: true
 	},

@@ -1,7 +1,7 @@
-<section ng-init="proyect.publico = true">
+<section>
 	<form name="ProyectForm" ng-submit="NuevoProyecto()" autocomplete="off">
 		<div class="modal-header">
-			<h3 class="modal-title">Nuevo proyecto</h3>
+			<h3 class="modal-title">{{header_text}}</h3>
 		</div>
 		<div class="modal-body">
 			<fieldset>
@@ -24,7 +24,7 @@
 			</fieldset>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-success" type="submit">Crear proyecto</button>
+			<button class="btn btn-success" type="submit">{{submit_text}}</button>
 			<button class="btn btn-danger" type="button" ng-click="cancel()">Cancelar</button>
 		</div>
 	</form>
