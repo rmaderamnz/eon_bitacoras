@@ -4,26 +4,28 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 	function($scope, $uibModal, $stateParams, $http) {
 
 		$scope.proyecto = [];
+		$scope.etiquetas = [];
 
 		$scope.volver = function(){
 			window.history.back();
 		};
 
-
 		$scope.getInfoProyecto = function(){
 			 $http.post('/proyectos/view/' + $stateParams.proyectoId ).success(function(response) {
-			 	//$scope.proyectos[index].usuario = response.username;
 			 	$scope.proyecto = response;
 			 	$scope.getNombreUsuario($scope.proyecto.usuario);
 			}).error(function(response) {
-				//$scope.error = response.message;
 			});
 		};
 
-		$scope.getNombreUsuario = function( id ){
+		$scope.getNombreUsuario = function( id , tag){
 			 $http.get('/users/getUser/' + id ).success(function(response) {
-			 	//$scope.proyectos[index].usuario = response.username;
-			 	$scope.proyecto.usuario = response.username;
+			 	if(tag !== undefined){
+			 		$scope.etiquetas[tag].nombreusuario = response.username;
+			 		//console.log($scope.etiquetas[tag].nombreusuario);
+			 	}else{
+			 		$scope.proyecto.nombreusuario = response.username;
+			 	}
 			}).error(function(response) {
 				//$scope.error = response.message;
 			});
@@ -35,35 +37,60 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 
 		$scope.getInfoProyecto();
 
+		//Lista de etiquetas
+		
+
+		$scope.getEtiquetas = function(){
+			$http.post('/etiqueta/' + $stateParams.proyectoId ).success(function(response) {
+			$scope.etiquetas = [];
+				for(var k in response) {
+					
+					switch(response[k].color) {
+						case 'red':
+							response[k].tagclass = 'panel-danger'; break;
+						case 'yellow':
+							response[k].tagclass = 'panel-warning'; break;
+						default:
+							response[k].tagclass = 'panel-success'; break;
+					}
+					$scope.getNombreUsuario(response[k].usuario, k);
+					$scope.etiquetas.push(response[k]);
+				}
+			}).error(function(response) {
+				$scope.error = response.message;
+				console.log(response);
+			});
+		};
+
+		$scope.getEtiquetas();
+
+		$scope.borrarEtiqueta = function(idEtiqueta){
+			$http.delete('/etiqueta/' + idEtiqueta ).success(function(response) {
+				$scope.getEtiquetas();
+			}).error(function(response) {
+				$scope.error = response.message;
+				console.log(response);
+			});
+		};
+
 		$scope.ModalEtiquetasOpen = function (idProyecto) {
 		    var uibModalInstance = $uibModal.open({
 		    	animation: true,
 				templateUrl: 'modules/proyectos/views/modal-newtag.client.view.html',
 				controller: function($scope, $uibModalInstance){
 
-					$scope.etiquetas = [];
 
-					$scope.getTagsProyecto = function(){
-						 $http.post('/proyectos/view/' + $stateParams.proyectoId ).success(function(response) {
-						 	//$scope.proyectos[index].usuario = response.username;
-						 	$scope.proyecto = response;
-						 	$scope.getNombreUsuario($scope.proyecto.usuario);
-						}).error(function(response) {
-							//$scope.error = response.message;
-						});
-					};
 
 					$scope.NuevaEtiqueta = function() {
 						$scope.tag.proyecto = $stateParams.proyectoId;
-
 						$http.post('/etiquetas/save', $scope.tag).success(function(response) {
-							console.log(response);
-							$uibModalInstance.dismiss('cancel');
-							//$location.path('/');
-						}).error(function(response) {
-							$scope.error = response.message;
-						});
-					};
+								console.log(response);
+								$uibModalInstance.dismiss('cancel');
+								//$location.path('/');
+							}).error(function(response) {
+								$scope.error = response.message;
+							});
+						};
 
 					$scope.cancel = function () {
 					    $uibModalInstance.dismiss('cancel');
@@ -78,6 +105,7 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 
 	    uibModalInstance.result.then(function () {
 	    	}, function () {
+	    		$scope.getEtiquetas();
 	      		//$log.info('Modal dismissed at: ' + new Date());
 	    	});
 	  	};

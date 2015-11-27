@@ -26,7 +26,6 @@ exports.create = function(req, res) {
 };
 
 exports.read = function(req, res) {
-	console.log(req);
 	res.jsonp(req.profile);
 };
 
