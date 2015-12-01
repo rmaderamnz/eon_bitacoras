@@ -12,8 +12,10 @@
 			<div class="container">
 				<h3 class="panel-title">Listado de proyectos</h3>	
 			</div>
-			
-			<div class="col-md-12">
+			<div ng-show="loading" layout="row" layout-sm="column" layout-align="space-around">
+				<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+			</div>
+			<div ng-hide="loading" class="col-md-12">
 				<table class="table table-striped">
 					<th class="text-center">Nombre</th>
 					<th class="text-center">Descripcion</th>

@@ -16,13 +16,17 @@ var TareasSchema = new Schema({
 	descripcion:{
 		type: String
 	},
+	usuario_creacion:{
+		type: Schema.ObjectId,
+		ref: 'User'
+	},
 	tipo: {
 		type: String,
 		enum: ['Planificada', 'Mejora', 'Correccion']
 	},
 	publico:{
 		type: Boolean,
-		default: true
+		default: false
 	},
 	creacion: {
 		type: Date,
@@ -36,21 +40,11 @@ var TareasSchema = new Schema({
 	},
 	status: {
 		type: String,
-		enum: ['En Espera', 'En Proceso', 'En Pausa', 'Terminada', 'Cancelada'],
-		default: 'En Espera'
+		enum: ['Espera', 'Proceso', 'Pausa', 'Terminada', 'Cancelada'],
+		default: 'Espera'
 	},
-	usuarios:{
-		usuario:[{
-			type: Schema.ObjectId,
-			ref: 'User'
-		}]
-	},
-	proyectos:{
-		proyecto:[{
-			type: Schema.ObjectId,
-			ref: 'Proyectos'
-		}]
-	}
+	usuarios_asignados:{ },
+	proyectos:{ }
 
 });
 

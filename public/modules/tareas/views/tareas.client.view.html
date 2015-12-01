@@ -6,11 +6,80 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-12 text-center"> 
-					<button class="btn btn-primary" >Crear nueva tarea</button> 
+					<button class="btn btn-primary" data-ng-click="ModalTareasOpen()">Crear nueva tarea</button> 
 				</div>
 			</div>
 			<div class="container">
 				<h3 class="panel-title">Listado de tareas</h3>	
+				<br>
+			</div>
+			<div class="row">
+				<label>  Ver:</label>
+				<uib-tabset>
+					<uib-tab select="CargarTabla(0)" heading="Todas"></uib-tab>
+					<uib-tab select="CargarTabla(1)" heading="En Espera"></uib-tab>
+					<uib-tab select="CargarTabla(2)" heading="En Proceso"></uib-tab>
+					<uib-tab select="CargarTabla(3)" heading="En Pausa"></uib-tab>
+					<uib-tab select="CargarTabla(4)" heading="Terminada"></uib-tab>
+					<uib-tab select="CargarTabla(5)" heading="Cancelada"></uib-tab>
+					<uib-tab select="CargarTabla(6)" heading="Por usuario"> 
+						<div class="col-md-6">
+							<label>Usuario</label>
+							<select class="form-control" ng-change="addUsuario()" ng-model="usuario.seleccion">
+								<option ng-repeat="usuario in usuarios" value="{{ {id: usuario._id, nombre : usuario.username} }}">{{usuario.username}}</option>
+							</select>
+							<br>
+						</div>
+					</uib-tab>
+				</uib-tabset>
+				<div ng-show="loading" layout="row" layout-sm="column" layout-align="space-around">
+					<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+				</div>
+				<br>
+			</div>
+			<div class="col-md-12" ng-hide="loading">
+				<table class="table table-striped">
+					<th>Nombre</th>
+					<th ng-show="showstatus">Estado</th>
+					<th>Tipo</th>
+					<th>Usuarios</th>
+					<th>Proyectos</th>
+					<th class="text-center">Creacion</th>
+					<th class="text-center">Consultar</th>
+					<!--Opciones para administrador-->
+					<th class="text-center">Acciones</th>
+					<tr ng-repeat="tarea in tareas" ng-style="!tarea.publico && {'background-color':'#ffe5e5'}" >
+						<td>
+							{{tarea.nombre}}
+						</td>
+						<td ng-show="showstatus">
+							{{tarea.status}}
+						</td>
+						<td>
+							{{tarea.tipo}}
+						</td>
+						<td>
+							<ul>
+								<li ng-repeat="usuario in tarea.usuarios_asignados"> {{usuario.nombre}}</li>
+							</ul>
+						</td>
+						<td>
+							<ul>
+								<li ng-repeat="proyecto in tarea.proyectos"> {{proyecto.nombre}}</li>
+							</ul>
+						</td>
+						<td class="text-center">
+							{{tarea.creacion | date:'yyyy-MM-dd hh:mm'}}
+						</td>
+						<td class="text-center">
+							<p> <a title="Consulta privilegios" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-tarea/{{tarea._id}} "></a></p>
+						</td>
+						<td class="text-center">
+							<p title="Editar Proyecto" class="glyphicon glyphicon-edit GlyphButton" data-ng-click="ModalProyectoOpen( '{{proyecto._id}}' )"></p>
+							<p title="Eliminar proyecto" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click=" borrarProyecto($event, '{{proyecto._id}}', '{{proyecto.nombre}}')"></p>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

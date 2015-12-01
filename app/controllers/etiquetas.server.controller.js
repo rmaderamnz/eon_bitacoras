@@ -37,7 +37,16 @@ exports.getByProyect = function(req, res, next, id) {
 	});
 };
 
-
+exports.getByTask = function(req, res, next, id) {
+	Etiqueta.find({
+		tarea: id
+	}).exec(function(err, tag) {
+		if (err) return next(err);
+		if (!tag) return next(new Error('Failed to load Tag ' + id));
+		req.profile = tag;
+		next();
+	});
+};
 
 /**
  * Show the current Etiqueta

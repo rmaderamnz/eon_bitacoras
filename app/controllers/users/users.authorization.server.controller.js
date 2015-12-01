@@ -22,7 +22,7 @@ exports.userByID = function(req, res, next, id) {
 };
 
 exports.read = function(req, res) {
-	res.jsonp(req.user);
+	res.jsonp(req.profile);
 };
 
 exports.getUsersInfo = function(req, res) {

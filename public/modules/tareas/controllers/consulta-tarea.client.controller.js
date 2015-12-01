@@ -1,35 +1,42 @@
 'use strict';
 
-angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', '$uibModal', '$stateParams', '$http',
+angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$uibModal', '$stateParams', '$http',
 	function($scope, $uibModal, $stateParams, $http) {
 
-		$scope.proyecto = [];
+		$scope.tarea = [];
+		$scope.tarea_aux = [];
 		$scope.etiquetas = [];
-		$scope.tareas = [];
-		$scope.loading = true;
+		$scope.Cambios = false;
 
 		$scope.volver = function(){
 			window.history.back();
 		};
 
-		$scope.getInfoProyecto = function(){
-			 $http.post('/proyectos/' + $stateParams.proyectoId ).success(function(response) {
-			 	$scope.proyecto = response;
-			 	$scope.getNombreUsuario($scope.proyecto.usuario);
+		$scope.getInfoTarea = function(){
+			 $http.post('/tareas/' + $stateParams.taskId ).success(function(response) {
+			 	//console.log(response);
+			 	$scope.tarea = response;
+			 	$scope.getNombreUsuario($scope.tarea.usuario_creacion);
+			 	$scope.tarea_aux = angular.copy($scope.tarea);
 				}).error(function(response) {
 			});
+		};
+
+		$scope.habilitarEdicion = function(){
+			$scope.Cambios = true;
+		};
+
+		$scope.descartarCambios = function(){
+			$scope.Cambios = false;
+			$scope.tarea= angular.copy($scope.tarea_aux);
 		};
 
 		$scope.getNombreUsuario = function( id , index , task){
 			 $http.get('/users/getUser/' + id ).success(function(response) {
 			 	if(index !== undefined){
-			 		if(task !== undefined){
-			 			$scope.tareas[index].usuario_creacion = response.username;
-			 		}else{
-			 			$scope.etiquetas[index].nombreusuario = response.username;
-			 		}
+			 		$scope.etiquetas[index].nombreusuario = response.username;
 			 	}else{
-			 		$scope.proyecto.nombreusuario = response.username;
+			 		$scope.tarea.nombreusuario = response.username;
 			 	}
 			}).error(function(response) {
 				console.log(response);
@@ -37,29 +44,15 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 			});
 		};
 
-		$scope.getTareas = function(){
-			console.log($stateParams.proyectoId);
-			$http.post('/tareas/proyect/' + $stateParams.proyectoId ).success(function(response) {
-				//console.log(response);
-				for(var k in response) {
-					$scope.tareas.push(response[k]);
-					$scope.getNombreUsuario($scope.tareas[k].usuario_creacion, k, true);
-				}
-				$scope.loading = false;
-				//console.log($scope.tareas);
-				}).error(function(response) {
-					console.log(response);
-			});
-		};
-
-		$scope.getInfoProyecto();
-		$scope.getTareas();
-
-		//Lista de etiquetas
+		$scope.getInfoTarea();
 
 		$scope.getEtiquetas = function(){
-			$http.post('/etiqueta/proyecto/' + $stateParams.proyectoId ).success(function(response) {
-			$scope.etiquetas = [];
+			console.log('Sacando etiquetas!');
+			console.log($stateParams.taskId);
+			$http.post('/etiqueta/tarea/' + $stateParams.taskId ).success(function(response) {
+				console.log(response);
+				$scope.etiquetas = [];
+
 				for(var k in response) {
 					switch(response[k].color) {
 						case 'red':
@@ -98,7 +91,7 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 
 
 					$scope.NuevaEtiqueta = function() {
-						$scope.tag.proyecto = $stateParams.proyectoId;
+						$scope.tag.tarea = $stateParams.taskId;
 						$http.post('/etiquetas/save', $scope.tag).success(function(response) {
 								console.log(response);
 								$uibModalInstance.dismiss('cancel');
@@ -111,6 +104,7 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 					$scope.cancel = function () {
 					    $uibModalInstance.dismiss('cancel');
 					 };
+
 				},
 		      	resolve: {
 		        	items: function () {
@@ -125,5 +119,6 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 	      		//$log.info('Modal dismissed at: ' + new Date());
 	    	});
 	  	};
+
 	}
 ]);
