@@ -48,7 +48,7 @@
 							<th class="text-center">Remover</th>
 							<tr ng-repeat="usuario in usuarios_asignados">
 								<td>{{usuario.nombre}}</td>
-								<td class="text-center"><p title="Quitar proyecto" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="quitarUsuario( '{{usuario.id}}' )"></p></td>
+								<td class="text-center"><p title="Quitar usuario" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="quitarUsuario( '{{usuario.id}}' )"></p></td>
 							</tr>
 						</table>
 						<select class="form-control" ng-change="addUsuario()" ng-model="usuario.seleccion">
@@ -78,10 +78,10 @@
 			</fieldset>
 		</div>
 		<div class="modal-footer">
-			<md-switch ng-model="task.publico" aria-label="Switch 1" class="md-block"> 
+			<!--<md-switch ng-model="task.publico" aria-label="Switch 1" class="md-block"> 
 				<b ng-show="task.publico">Tarea publica </b>
 				<b ng-show="!task.publico">Tarea privada </b>
-			</md-switch>
+			</md-switch>-->
 			<button class="btn btn-success" type="submit">Nueva tarea</button>
 			<button class="btn btn-danger" type="button" ng-click="cancel()">Cancelar</button>
 		</div>

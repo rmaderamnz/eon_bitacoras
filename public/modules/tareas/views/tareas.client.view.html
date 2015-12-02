@@ -20,17 +20,8 @@
 					<uib-tab select="CargarTabla(1)" heading="En Espera"></uib-tab>
 					<uib-tab select="CargarTabla(2)" heading="En Proceso"></uib-tab>
 					<uib-tab select="CargarTabla(3)" heading="En Pausa"></uib-tab>
-					<uib-tab select="CargarTabla(4)" heading="Terminada"></uib-tab>
+					<uib-tab select="CargarTabla(4)" heading="Terminadas"></uib-tab>
 					<uib-tab select="CargarTabla(5)" heading="Cancelada"></uib-tab>
-					<uib-tab select="CargarTabla(6)" heading="Por usuario"> 
-						<div class="col-md-6">
-							<label>Usuario</label>
-							<select class="form-control" ng-change="addUsuario()" ng-model="usuario.seleccion">
-								<option ng-repeat="usuario in usuarios" value="{{ {id: usuario._id, nombre : usuario.username} }}">{{usuario.username}}</option>
-							</select>
-							<br>
-						</div>
-					</uib-tab>
 				</uib-tabset>
 				<div ng-show="loading" layout="row" layout-sm="column" layout-align="space-around">
 					<md-progress-circular md-mode="indeterminate"></md-progress-circular>
@@ -45,9 +36,10 @@
 					<th>Usuarios</th>
 					<th>Proyectos</th>
 					<th class="text-center">Creacion</th>
+					<th class="text-center" ng-show="tabIndex==4 || tabIndex==5"> <span ng-if="tabIndex==4 ">Terminada</span> <span ng-if="tabIndex==5 ">Cancelacion</span></th>
 					<th class="text-center">Consultar</th>
 					<!--Opciones para administrador-->
-					<th class="text-center">Acciones</th>
+					<!--<th class="text-center">Acciones</th>-->
 					<tr ng-repeat="tarea in tareas" ng-style="!tarea.publico && {'background-color':'#ffe5e5'}" >
 						<td>
 							{{tarea.nombre}}
@@ -71,13 +63,16 @@
 						<td class="text-center">
 							{{tarea.creacion | date:'yyyy-MM-dd hh:mm'}}
 						</td>
-						<td class="text-center">
-							<p> <a title="Consulta privilegios" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-tarea/{{tarea._id}} "></a></p>
+						<td class="text-center" ng-show="tabIndex==4 || tabIndex==5">
+							{{tarea.terminado | date:'yyyy-MM-dd hh:mm'}}
 						</td>
 						<td class="text-center">
+							<p> <a title="Ver datos de la tarea" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-tarea/{{tarea._id}} "></a></p>
+						</td>
+						<!--<td class="text-center">
 							<p title="Editar Proyecto" class="glyphicon glyphicon-edit GlyphButton" data-ng-click="ModalProyectoOpen( '{{proyecto._id}}' )"></p>
 							<p title="Eliminar proyecto" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click=" borrarProyecto($event, '{{proyecto._id}}', '{{proyecto.nombre}}')"></p>
-						</td>
+						</td>-->
 					</tr>
 				</table>
 			</div>

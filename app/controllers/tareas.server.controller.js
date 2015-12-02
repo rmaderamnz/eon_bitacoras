@@ -77,11 +77,28 @@ exports.read = function(req, res) {
 };
 
 
-/**
- * Update a Tarea
- */
 exports.update = function(req, res) {
-
+	Tarea.findOne({
+		_id: req.params.taskId
+	}).exec(function(err, task) {
+		if (err) { return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			}); }
+		task.nombre = req.body.nombre;
+		task.descripcion = req.body.descripcion;
+		task.proyectos = req.body.proyectos;
+		task.usuarios_asignados = req.body.usuarios_asignados;
+		task.status = req.body.status;
+		task.tipo = req.body.tipo;
+		task.publico = req.body.publico;
+		task.compromiso = req.body.compromiso;
+		task.terminado = req.body.terminado;
+		task.save(function(error){
+            if(error){res.send(error);
+            }
+            res.json(task);
+        });
+	});
 };
 
 /**

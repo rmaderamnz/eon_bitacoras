@@ -49,11 +49,23 @@ exports.proyectByID = function(req, res, next, id) {
 		_id: id
 	}).exec(function(err, proyect) {
 		if (err) return next(err);
-		if (!proyect) return next(new Error('Failed to load User ' + id));
+		if (!proyect) return next(new Error('Failed to load proyect ' + id));
 		req.profile = proyect;
 		next();
 	});
 };
+
+exports.proyectByUserID = function(req, res, next, id) {
+	Proyecto.findOne({
+		usuario: id
+	}).exec(function(err, proyect) {
+		if (err) return next(err);
+		if (!proyect) return next(new Error('Failed to load proyecto with user ' + id));
+		req.profile = proyect;
+		next();
+	});
+};
+
 
 /**
  * Update a Proyecto

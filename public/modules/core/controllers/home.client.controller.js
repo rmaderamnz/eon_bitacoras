@@ -12,6 +12,7 @@ angular.module('core').controller('HomeController', ['$scope', '$location', 'Aut
 		}else{
 			$location.path('/main');
 		}
-		// /main
+
+		//Logica del dashboard
 	}
 ]);

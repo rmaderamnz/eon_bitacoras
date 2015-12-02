@@ -13,3 +13,13 @@
 .ng-valid.ng-dirty {
 	border-color: #78FA89;
 }
+
+.btn.outline {
+    background: white;
+    color: #007acc;
+}
+
+.navbar-left
+{
+	padding-right: 50px;
+}

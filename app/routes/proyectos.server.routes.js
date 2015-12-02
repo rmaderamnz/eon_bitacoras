@@ -13,5 +13,9 @@ module.exports = function(app) {
 		.delete(proyect.delete)
 		.put(proyect.update);
 
+	app.route('/proyectos/list/:ProyectUserId')
+		.get(proyect.read);
+
 	app.param('proyectId', proyect.proyectByID);
+	app.param('ProyectUserId', proyect.proyectByUserID);
 };

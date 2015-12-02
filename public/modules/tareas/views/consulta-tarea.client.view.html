@@ -1,4 +1,4 @@
-<section data-ng-controller="ConsultaTareaController">
+<section data-ng-controller="ConsultaTareaController" ng-init="asignar = false;">
 	<form>
 		<div class="panel panel-default" style="overflow: hidden;">
 			<div class="panel-heading" >
@@ -15,17 +15,7 @@
 						<label>Descripcion</label>
 						<textarea class="form-control" style="width:100%" ng-model="tarea.descripcion" ng-change="habilitarEdicion()" > {{tarea.descripcion}} </textarea> 
 						<br>
-						<div class="col-md-6">
-							<label>Estado</label>
-							<select class="form-control" ng-change="habilitarEdicion()" ng-model="tarea.status">
-								<option value="Espera">En espera</option>
-								<option value="Proceso">En proceso</option>
-								<option value="Pausa">En pausa</option>
-								<option value="Terminada">Terminada</option>
-								<option value="Cancelada">Cancelada</option>
-							</select>
-						</div>
-						<div class="col-md-6">
+						<div ng-class=" (tarea.status =='Terminada' || tarea.status =='Cancelada') ? '' : 'col-md-6' ">
 							<label>Tipo</label>
 							<select class="form-control" ng-change="habilitarEdicion()" ng-model="tarea.tipo">
 								<option value="Planificada">Planificada</option>
@@ -33,16 +23,28 @@
 								<option value="Correccion">Correccion</option>
 							</select>
 						</div>
-						<br>
-						<small>Fecha de creacion: {{ tarea.creacion | date:'yyyy-MM-dd - hh:mm:ss' }} </small> <br>
-						<small>Creada por: {{tarea.nombreusuario}}</small>
-					</fieldset>
-					<div style="text-align:center;">
-						<div class="well well-lg" uib-collapse="!Cambios">
-							<md-button class="md-raised md-primary">Guardar cambios</md-button>
-							<md-button class="md-raised md-danger" ng-click="descartarCambios()">Descartar</md-button>
+						<div class="col-md-6" ng-show="tarea.status !='Terminada' && tarea.status !='Cancelada'">
+							<label>Estado</label>
+							<select class="form-control" ng-change="habilitarEdicion()" ng-model="tarea.status" >
+								<option value="Espera">En espera</option>
+								<option value="Proceso">En proceso</option>
+								<option value="Pausa">En pausa</option>
+							</select>
+							<br>
 						</div>
-					</div>
+						<div class="row">
+							<small>Fecha de creacion:   {{ tarea.creacion | date:'yyyy-MM-dd - hh:mm:ss' }} </small> <br>
+							<small>Fecha de compromiso: {{ tarea.compromiso | date:'yyyy-MM-dd' }} </small> <br>
+							<small ng-show="tarea.status =='Terminada'"> <b> Fecha de terminacion: {{ tarea.terminado | date:'yyyy-MM-dd - hh:mm:ss' }} </b> <br> </small> 
+							<small ng-show="tarea.status =='Cancelada'"> <b> Fecha de cancelacion: {{ tarea.terminado | date:'yyyy-MM-dd - hh:mm:ss' }} </b> <br> </small> 
+							<small>Creada por: {{tarea.nombreusuario}}</small>
+							<br>
+						</div>
+						<div class="row" ng-show="tarea.status !='Terminada' && tarea.status !='Cancelada'">
+							<md-button class="md-raised md-primary pull-right" ng-click="finalizarTarea('Terminada')"> <span class="glyphicon glyphicon-ok-circle GlyphButton"></span> Terminar</md-button>
+							<md-button class="md-raised md-danger pull-right" ng-click="finalizarTarea('Cancelada')"> <span class="glyphicon glyphicon-remove-circle GlyphButton"></span> Cancelar</md-button>
+						</div>
+					</fieldset>
 				</div>
 				<div class="col-md-5">
 					<fieldset>
@@ -66,6 +68,13 @@
 				</div>
 			</div>
 			<br>
+			<div style="text-align:center;">
+				<div class="well well-lg" uib-collapse="!Cambios">
+					<md-button class="md-raised md-primary" ng-click="guardarCambios()">Guardar cambios</md-button>
+					<md-button class="md-raised md-danger"  ng-click="descartarCambios()">Descartar</md-button>
+				</div>
+			</div>
+			<br>
 			<div class="panel panel-default">
 				<div class="panel-heading" >
 					<h1 class="panel-title">Proyectos y usuarios asignados</h1>
@@ -75,53 +84,43 @@
 						<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 					</div>
 					<div ng-hide="loading">
+						<div class="row">
+							<md-switch ng-model="asignar" aria-label="Switch 1" class="md-block"> 
+								<b ng-show="asignar">Edicion de usuarios y proyectos habilitada </b>
+								<b ng-show="!asignar">Edicion de usuarios y proyectos deshabilitada</b>
+							</md-switch>
+						</div>
 						<div class="col-md-6">
 							<label> <b>Proyectos</b> </label>
 							<table class="table table-striped">
 								<th>Nombre</th>
-								<th>Estado</th>
-								<th>Tipo</th>
-								<th>Creado por</th>
-								<th>Usuarios</th>
 								<th class="text-center">Consultar</th>
-								<tr ng-repeat="tarea in tareas">
-									<td>{{tarea.nombre}}</td>
-									<td>{{tarea.status}}</td>
-									<td>{{tarea.tipo}}</td>
-									<td>{{tarea.usuario_creacion}}</td>
-									<td>
-										<ul>
-											<li ng-repeat="usuario in tarea.usuarios_asignados"> {{usuario.nombre}}</li>
-										</ul>
-									</td>
-									<td></td>
+								<th ng-show="asignar" class="text-center">Remover</th>
+								<tr ng-repeat="proyecto in tarea.proyectos">
+									<td>{{proyecto.nombre}}</td>
+									<td class="text-center"> <p> <a title="Consultar proyecto" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-proyect/{{proyecto.id}} "></a></p> </td>
+									<td ng-show="asignar" class="text-center"><p title="Quitar proyecto" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="quitarProyecto( '{{proyecto.id}}' )"></p></td>
 								</tr>
 							</table>
+							<select class="form-control" ng-change="addProyecto()" ng-model="proyecto.seleccion" ng-show="asignar"> 
+								<option ng-repeat="proyecto in proyectos" value="{{ {id: proyecto._id, nombre : proyecto.nombre} }}">{{proyecto.nombre}}</option>
+							</select>
 						</div >
 						<div class="col-md-6">
 							<label> <b>Usuarios</b> </label>
 							<table class="table table-striped">
 								<th>Nombre</th>
-								<th>Estado</th>
-								<th>Tipo</th>
-								<th>Creado por</th>
-								<th>Usuarios</th>
-								<th class="text-center">Consultar</th>
-								<tr ng-repeat="tarea in tareas">
-									<td>{{tarea.nombre}}</td>
-									<td>{{tarea.status}}</td>
-									<td>{{tarea.tipo}}</td>
-									<td>{{tarea.usuario_creacion}}</td>
-									<td>
-										<ul>
-											<li ng-repeat="usuario in tarea.usuarios_asignados"> {{usuario.nombre}}</li>
-										</ul>
-									</td>
-									<td></td>
+								<th ng-show="asignar" class="text-center">Remover</th>
+								<tr ng-repeat="usuario in tarea.usuarios_asignados">
+									<td>{{usuario.nombre}}</td>
+									<td ng-show="asignar" class="text-center"><p title="Quitar usuario" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="quitarUsuario( '{{usuario.id}}' )"></p></td>
 								</tr>
 							</table>
+							<select class="form-control" ng-change="addUsuario()" ng-model="usuario.seleccion" ng-show="asignar">
+								<option ng-repeat="usuario in usuarios" value="{{ {id: usuario._id, nombre : usuario.username} }}">{{usuario.username}}</option>
+							</select>
 						</div>
-							
+						<br>
 					</div>
 				</div>
 			</div>

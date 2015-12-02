@@ -18,13 +18,8 @@ module.exports = function(app) {
 	app.route('/tareas/status/:TaskStatus')
 		.post(task.read);
 	app.route('/tareas/:taskId')
-		.post(task.read);
-	/*app.route('/tareas/:taskId')
 		.post(task.read)
-		.delete(task.delete)
 		.put(task.update);
-
-	app.param('taskId', task.proyectByID);*/
 
 	app.param('taskId', task.getByTaskId);
 	app.param('ProyectId', task.getByProyect);

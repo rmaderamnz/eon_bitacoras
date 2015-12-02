@@ -5,6 +5,7 @@ angular.module('tareas').controller('TareasController', ['$scope','$uibModal','A
 
 		$scope.loading = true;
 		$scope.estados = ['Espera','Proceso','Pausa','Terminada','Cancelada'];
+		$scope.tabIndex = 0;
 		$scope.tareas = [];
 		$scope.showstatus = true;
 
@@ -12,6 +13,7 @@ angular.module('tareas').controller('TareasController', ['$scope','$uibModal','A
 			$scope.loading = true;
 			$scope.tareas = [];
 			$scope.showstatus = true;
+			$scope.tabIndex = tabla;
 			if(tabla === 0){
 				$http.get('/tareas/list/' ).success(function(response) {
 					 	for(var k in response) {
@@ -198,6 +200,7 @@ angular.module('tareas').controller('TareasController', ['$scope','$uibModal','A
 
 	    uibModalInstance.result.then(function () {
 	    	}, function () {
+	    		$scope.CargarTabla($scope.tabIndex);
 	      		//$log.info('Modal dismissed at: ' + new Date());
 	    	});
 	  	};

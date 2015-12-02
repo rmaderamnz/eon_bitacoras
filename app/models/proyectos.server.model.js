@@ -18,7 +18,7 @@ var ProyectosSchema = new Schema({
 	},
 	publico:{
 		type: Boolean,
-		default: false
+		default: true
 	},
 	creacion: {
 		type: Date,

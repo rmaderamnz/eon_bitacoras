@@ -81,7 +81,7 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 		$scope.getEtiquetas();
 
 		$scope.borrarEtiqueta = function(idEtiqueta){
-			$http.delete('/etiqueta/' + idEtiqueta ).success(function(response) {
+			$http.delete('/etiqueta/proyecto/' + idEtiqueta ).success(function(response) {
 				$scope.getEtiquetas();
 			}).error(function(response) {
 				$scope.error = response.message;
