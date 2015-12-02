@@ -5,6 +5,8 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 
 		$scope.proyecto = [];
 		$scope.etiquetas = [];
+		$scope.tareas = [];
+		$scope.loading = true;
 
 		$scope.volver = function(){
 			window.history.back();
@@ -14,14 +16,18 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 			 $http.post('/proyectos/' + $stateParams.proyectoId ).success(function(response) {
 			 	$scope.proyecto = response;
 			 	$scope.getNombreUsuario($scope.proyecto.usuario);
-			}).error(function(response) {
+				}).error(function(response) {
 			});
 		};
 
-		$scope.getNombreUsuario = function( id , tag){
+		$scope.getNombreUsuario = function( id , index , task){
 			 $http.get('/users/getUser/' + id ).success(function(response) {
-			 	if(tag !== undefined){
-			 		$scope.etiquetas[tag].nombreusuario = response.username;
+			 	if(index !== undefined){
+			 		if(task !== undefined){
+			 			$scope.tareas[index].usuario_creacion = response.username;
+			 		}else{
+			 			$scope.etiquetas[index].nombreusuario = response.username;
+			 		}
 			 	}else{
 			 		$scope.proyecto.nombreusuario = response.username;
 			 	}
@@ -31,16 +37,30 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 			});
 		};
 
+		$scope.getTareas = function(){
+			console.log($stateParams.proyectoId);
+			$http.post('/tareas/proyect/' + $stateParams.proyectoId ).success(function(response) {
+				//console.log(response);
+				for(var k in response) {
+					$scope.tareas.push(response[k]);
+					$scope.getNombreUsuario($scope.tareas[k].usuario_creacion, k, true);
+				}
+				$scope.loading = false;
+				//console.log($scope.tareas);
+				}).error(function(response) {
+					console.log(response);
+			});
+		};
+
 		$scope.getInfoProyecto();
+		$scope.getTareas();
 
 		//Lista de etiquetas
-		
 
 		$scope.getEtiquetas = function(){
-			$http.post('/etiqueta/' + $stateParams.proyectoId ).success(function(response) {
+			$http.post('/etiqueta/proyecto/' + $stateParams.proyectoId ).success(function(response) {
 			$scope.etiquetas = [];
 				for(var k in response) {
-					
 					switch(response[k].color) {
 						case 'red':
 							response[k].tagclass = 'panel-danger'; break;
@@ -61,7 +81,7 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 		$scope.getEtiquetas();
 
 		$scope.borrarEtiqueta = function(idEtiqueta){
-			$http.delete('/etiqueta/' + idEtiqueta ).success(function(response) {
+			$http.delete('/etiqueta/proyecto/' + idEtiqueta ).success(function(response) {
 				$scope.getEtiquetas();
 			}).error(function(response) {
 				$scope.error = response.message;

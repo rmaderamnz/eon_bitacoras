@@ -1,7 +1,7 @@
 <section data-ng-controller="ConsultaProyectoController">
 	<div class="panel panel-default" style="overflow: hidden;">
 		<div class="panel-heading" >
-			<h1 class="panel-title">Proyecto : {{proyecto.nombre}} <md-button class="md-warn" ng-click="volver()">Regresar</md-button> </h1>
+			<h1 class="panel-title"> <b>Proyecto</b> : {{proyecto.nombre}} <md-button class="md-warn" ng-click="volver()">Regresar</md-button> </h1>
 		</div>
 		<div class="panel-body">
 			<div class="container">
@@ -43,19 +43,32 @@
 					<h1 class="panel-title">Tareas asignadas</h1>
 				</div>
 				<div class="panel-body">
-					
-					<div>
-						<div class="row">
-							<label>Ver: </label>
-						</div>
+					<div ng-show="loading" layout="row" layout-sm="column" layout-align="space-around">
+						<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+					</div>
+					<div ng-hide="loading">
 						<table class="table table-striped">
-							<th>Tarea</th>
+							<th>Nombre</th>
+							<th>Estado</th>
 							<th>Tipo</th>
-							<th>Correo</th>
-							<th>Consultar</th>
+							<th>Creado por</th>
+							<th>Usuarios</th>
+							<th class="text-center">Consultar</th>
+							<tr ng-repeat="tarea in tareas">
+								<td>{{tarea.nombre}}</td>
+								<td>{{tarea.status}}</td>
+								<td>{{tarea.tipo}}</td>
+								<td>{{tarea.usuario_creacion}}</td>
+								<td>
+									<ul>
+										<li ng-repeat="usuario in tarea.usuarios_asignados"> {{usuario.nombre}}</li>
+									</ul>
+								</td>
+								<td class="text-center"> <p> <a title="Ver datos de la tarea" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-tarea/{{tarea._id}} "></a></p> </td>
+								<td></td>
+							</tr>
 						</table>
 					</div>
-					
 				</div>
 			</div>
 		</div>

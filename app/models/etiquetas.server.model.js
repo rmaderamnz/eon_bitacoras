@@ -34,6 +34,10 @@ var EtiquetasSchema = new Schema({
 	proyecto:{
 		type: Schema.ObjectId,
 		ref: 'Proyectos'
+	},
+	tarea:{
+		type: Schema.ObjectId,
+		ref: 'Tareas'
 	}
 });
 

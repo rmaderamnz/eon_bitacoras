@@ -1,8 +1,13 @@
 <div class="container" data-ng-controller="HeaderController">
 	<nav class="navbar navbar-fixed-top navbar-inverse" data-ng-show="authentication.user">
 		<div class="container">
-			<a class="navbar-brand" href="/#!/">Bitacoras EON Core</a>
+			
+			<!--<a class="navbar-brand" href="/#!/">Bitacoras EON Core</a>-->
 			<div style="padding-top: 0.5%;">
+				<ul class="nav navbar-nav navbar-left">
+					<button onclick="location.href='/#!/';" class="btn outline" title="Volver al dashboard"> <img src="modules/core/img/Logotipo.svg" style="width:55px"> </button>
+				</ul>
+				
 				<ul class="list-inline nav navbar-nav">
 					<li uib-dropdown ng-repeat="modulo in modulos" >
 					    <button id="single-button" type="button" class="btn btn-info" uib-dropdown-toggle> {{modulo.nombre}}  <span class="caret"></span>
@@ -27,6 +32,8 @@
 </div>
 
 	<!-- <div class="btn-group" uib-dropdown is-open="status.isopen">
+
+	style="width:100px"
       <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
         Button dropdown <span class="caret"></span>
       </button>

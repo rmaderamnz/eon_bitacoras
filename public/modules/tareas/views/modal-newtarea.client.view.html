@@ -1,0 +1,89 @@
+<section>
+	<form name="TareasForm" ng-submit="NuevaTarea()" ng-init="task.tipo ='Planificada'; task.status = 'En Espera'" autocomplete="off">
+		<div class="modal-heading" >
+			<h1 class="modal-title">Nueva tarea</h1>
+		</div>
+		<div class="modal-body">
+			<uib-alert ng-repeat="error in errores" type="danger" close="cerrarAlerta($index)"> {{error.msg}} </uib-alert>
+			<fieldset>
+				<legend>Datos</legend>
+				<div class="form-group">
+					<label for="firstName">Nombre</label>
+					<input type="text" required class="form-control" data-ng-model="task.nombre" placeholder="Nombre">
+				</div>
+				<div class="form-group">
+					<label>Descripcion</label>
+					<textarea class="form-control" style="width:100%" required data-ng-model="task.descripcion" placeholder="Descripcion basica de la tarea"></textarea>
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend>Tipo de tarea</legend>
+				<md-radio-group layout="row" data-ng-model="task.tipo" ng-change="checkPlanificada()">
+					<md-radio-button value="Planificada" >Planificada</md-radio-button>
+					<md-radio-button value="Mejora" > Mejora </md-radio-button>
+					<md-radio-button value="Correccion" >Correccion</md-radio-button>
+				</md-radio-group>
+			</fieldset>
+			<fieldset>
+				<legend>Usuarios y proyectos asignados</legend>
+				<div class="container">
+					<!--Proyectos-->
+					<div class="col-md-4">
+						<table class="table table-striped">
+							<th>Proyectos asignados</th>
+							<th class="text-center">Remover</th>
+							<tr ng-repeat="proyecto in proyectos_asignados">
+								<td>{{proyecto.nombre}}</td>
+								<td class="text-center"><p title="Quitar proyecto" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="quitarProyecto( '{{proyecto.id}}' )"></p></td>
+							</tr>
+						</table>
+						<select class="form-control" ng-change="addProyecto()" ng-model="proyecto.seleccion"> 
+							<option ng-repeat="proyecto in proyectos" value="{{ {id: proyecto._id, nombre : proyecto.nombre} }}">{{proyecto.nombre}}</option>
+						</select>
+					</div>
+					<!--Usuarios-->
+					<div class="col-md-4">
+						<table class="table table-striped">
+							<th>Usuarios asignados</th>
+							<th class="text-center">Remover</th>
+							<tr ng-repeat="usuario in usuarios_asignados">
+								<td>{{usuario.nombre}}</td>
+								<td class="text-center"><p title="Quitar usuario" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="quitarUsuario( '{{usuario.id}}' )"></p></td>
+							</tr>
+						</table>
+						<select class="form-control" ng-change="addUsuario()" ng-model="usuario.seleccion">
+							<option ng-repeat="usuario in usuarios" value="{{ {id: usuario._id, nombre : usuario.username} }}">{{usuario.username}}</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend>Datos adicionales</legend>
+				<div class="container">
+					<div class="col-md-2">
+						<label>Estado: </label>
+						<select class="form-control" ng-model="task.status">
+							<option value="Espera"> En espera </option>
+							<option value="Proceso"> En proceso </option>
+							<option value="Pausa"> En pausa </option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<label>Fecha tentativa de terminacion</label>
+						<md-content>
+							<md-datepicker ng-model="task.compromiso" md-placeholder="Fecha"></md-datepicker>
+						</md-content>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="modal-footer">
+			<!--<md-switch ng-model="task.publico" aria-label="Switch 1" class="md-block"> 
+				<b ng-show="task.publico">Tarea publica </b>
+				<b ng-show="!task.publico">Tarea privada </b>
+			</md-switch>-->
+			<button class="btn btn-success" type="submit">Nueva tarea</button>
+			<button class="btn btn-danger" type="button" ng-click="cancel()">Cancelar</button>
+		</div>
+	</form>
+</section>

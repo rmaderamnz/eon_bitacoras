@@ -13,7 +13,7 @@ var _ = require('lodash'),
 exports.userByID = function(req, res, next, id) {
 	User.findOne({
 		_id: id
-	}).exec(function(err, user) {
+	},{ username : 1, firstName : 1, lastName : 1, email: 1 }).exec(function(err, user) {
 		if (err) return next(err);
 		if (!user) return next(new Error('Failed to load User ' + id));
 		req.profile = user;
@@ -22,7 +22,7 @@ exports.userByID = function(req, res, next, id) {
 };
 
 exports.read = function(req, res) {
-	res.jsonp(req.user);
+	res.jsonp(req.profile);
 };
 
 exports.getUsersInfo = function(req, res) {

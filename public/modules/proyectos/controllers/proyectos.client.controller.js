@@ -3,21 +3,21 @@
 angular.module('proyectos').controller('ProyectosController', ['$scope','$uibModal', '$http','$mdDialog', '$mdMedia', 
 	function($scope, $uibModal, $http, $mdDialog, $mdMedia) {
 		$scope.proyectos = [];
+		$scope.loading = true;
 
 		$scope.getProyectos = function(){
 			 $http.get('/proyectos/list' ).success(function(response) {
 			 	//console.log(response);
 			 	$scope.proyectos = [];
-					for(var k in response) {
-						$scope.proyectos.push(response[k]);
-						$scope.getNombreUsuario($scope.proyectos[k].usuario, k);
-					}
+				for(var k in response) {
+					$scope.proyectos.push(response[k]);
+					$scope.getNombreUsuario($scope.proyectos[k].usuario, k);
+				}
+				$scope.loading = false;
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
 		};
-
-		$scope.getProyectos();
 
 		$scope.getNombreUsuario = function( id , index){
 			 $http.get('/users/getUser/' + id ).success(function(response) {
@@ -28,6 +28,7 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 			});
 		};
 
+		$scope.getProyectos();
 
 		$scope.borrarProyecto = function(ev, idProyecto, nombreProyecto) {
 			console.log(idProyecto);
@@ -39,7 +40,6 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 		    $mdDialog
 		        .show( alert )
 		        .then(function() {
-		        	//Si
 		        	$http.delete('/proyectos/' + idProyecto ).success(function(response) {
 		        		alert = $mdDialog.alert()
 					        .title('Proyecto borrado exitosamente')
@@ -50,6 +50,7 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 							.finally(function() {
 								alert = undefined;
 							});
+						$scope.loading = true;
 						$scope.getProyectos();
 					}).error(function(response) {
 
@@ -150,6 +151,7 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 
 	    uibModalInstance.result.then(function () {
 	    	}, function () {
+	    		$scope.loading = true;
 	    		$scope.getProyectos();
 	      		//$log.info('Modal dismissed at: ' + new Date());
 	    	});
