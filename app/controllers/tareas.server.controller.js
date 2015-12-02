@@ -48,6 +48,30 @@ exports.getByStatus = function(req, res, next, estado) {
 	});
 };
 
+exports.getByUser = function(req, res, next, UserId) {
+	Tarea.find({
+		usuario_creacion : UserId,
+		status : { $nin : ['Terminada','Cancelada']}}
+		).exec(function(err, task) {
+		if (err) return next(err);
+		if (!task) return next(new Error('Failed to load task ' + UserId));
+		req.profile = task;
+		next();
+	});
+};
+
+exports.getByAsignedUser = function(req, res, next, AsignedUserId) {
+	Tarea.find({
+		'usuarios_asignados.id' : AsignedUserId,
+		status : { $nin : ['Terminada','Cancelada']}}
+		).exec(function(err, task) {
+		if (err) return next(err);
+		if (!task) return next(new Error('Failed to load task ' + AsignedUserId));
+		req.profile = task;
+		next();
+	});
+};
+
 
 exports.getList = function(req, res) {
 	Tarea.find().exec(function(err, tasks){

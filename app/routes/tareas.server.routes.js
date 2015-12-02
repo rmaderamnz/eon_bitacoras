@@ -15,6 +15,10 @@ module.exports = function(app) {
 		.post(task.read);
 	app.route('/tareas/proyect/:ProyectId')
 		.post(task.read);
+	app.route('/tareas/user/created/:UserId')
+		.post(task.read);
+	app.route('/tareas/user/asigned/:AsignedUserId')
+		.post(task.read);
 	app.route('/tareas/status/:TaskStatus')
 		.post(task.read);
 	app.route('/tareas/:taskId')
@@ -24,4 +28,6 @@ module.exports = function(app) {
 	app.param('taskId', task.getByTaskId);
 	app.param('ProyectId', task.getByProyect);
 	app.param('TaskStatus', task.getByStatus);
+	app.param('UserId', task.getByUser);
+	app.param('AsignedUserId', task.getByAsignedUser);
 };

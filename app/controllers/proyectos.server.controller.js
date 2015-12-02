@@ -56,7 +56,7 @@ exports.proyectByID = function(req, res, next, id) {
 };
 
 exports.proyectByUserID = function(req, res, next, id) {
-	Proyecto.findOne({
+	Proyecto.find({
 		usuario: id
 	}).exec(function(err, proyect) {
 		if (err) return next(err);

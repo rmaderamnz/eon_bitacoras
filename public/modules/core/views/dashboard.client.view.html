@@ -9,22 +9,21 @@
 			</div>
 			
 			<uib-tabset type="pills">
-				<uib-tab select="CargarTabla(0)" heading="Tareas">
+				<uib-tab heading="Tareas">
 					<!--Tareas-->
 					<div class="panel panel-default">
 						<div class="panel-heading" >
-							<h1 class="panel-title">Control de tareas de NombreDeUsuario</h1>
+							<h1 class="panel-title">Control de tareas de {{authentication.user.firstName}} {{authentication.user.lastName}} </h1>
 						</div>
 						<div class="panel-body">
 							<uib-tabset>
-								<uib-tab select="CargarTabla(0)" heading="Tareas asignadas"></uib-tab>
-								<uib-tab select="CargarTabla(1)" heading="Tareas creadas"></uib-tab>
-								<uib-tab select="CargarTabla(2)" heading="Tareas terminadas"></uib-tab>
+								<uib-tab select="cargarDatos(0,1)" heading="Tareas asignadas"></uib-tab>
+								<uib-tab select="cargarDatos(0,2)" heading="Tareas creadas"></uib-tab>
 							</uib-tabset>
-							<div ng-show="!loading" layout="row" layout-sm="column" layout-align="space-around">
+							<div ng-show="loading" layout="row" layout-sm="column" layout-align="space-around">
 								<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 							</div>
-							<div class="col-md-12">
+							<div class="col-md-12" ng-hide="loading">
 								<table class="table table-striped">
 									<th>Nombre</th>
 									<th>Estado</th>
@@ -32,7 +31,6 @@
 									<th>Usuarios</th>
 									<th>Proyectos</th>
 									<th class="text-center">Creacion</th>
-									<th class="text-center"> Terminada</th>
 									<th class="text-center">Consultar</th>
 									<!--Opciones para administrador-->
 									<!--<th class="text-center">Acciones</th>-->
@@ -40,7 +38,7 @@
 										<td>
 											{{tarea.nombre}}
 										</td>
-										<td ng-show="showstatus">
+										<td>
 											{{tarea.status}}
 										</td>
 										<td>
@@ -59,9 +57,6 @@
 										<td class="text-center">
 											{{tarea.creacion | date:'yyyy-MM-dd hh:mm'}}
 										</td>
-										<td class="text-center" ng-show="tabIndex==4 || tabIndex==5">
-											{{tarea.terminado | date:'yyyy-MM-dd hh:mm'}}
-										</td>
 										<td class="text-center">
 											<p> <a title="Ver datos de la tarea" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-tarea/{{tarea._id}} "></a></p>
 										</td>
@@ -72,25 +67,23 @@
 					</div>
 						
 				</uib-tab>
-				<uib-tab select="CargarTabla(1)" heading="Proyectos">
+				<uib-tab select="cargarDatos(1)" heading="Proyectos">
 					<!--Proyectos-->
 					<div class="panel panel-default">
 						<div class="panel-heading" >
-							<h1 class="panel-title">Control de proyectos de NombreDeUsuario</h1>
+							<h1 class="panel-title">Control de proyectos de {{authentication.user.firstName}} {{authentication.user.lastName}}</h1>
 						</div>
 						<div class="panel-body">
-							<div ng-show="!loading" layout="row" layout-sm="column" layout-align="space-around">
+							<div ng-show="loading" layout="row" layout-sm="column" layout-align="space-around">
 								<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 							</div>
-							<div class="col-md-12">
+							<div class="col-md-12" ng-hide="loading">
 								<table class="table table-striped">
 									<th class="text-center">Nombre</th>
 									<th class="text-center">Descripcion</th>
 									<th class="text-center">Creacion</th>
 									<th class="text-center">Consultar</th>
 									<!--Opciones para administrador-->
-									<th class="text-center">Acciones</th>
-
 									<tr ng-repeat="proyecto in proyectos" ng-style="!proyecto.publico && {'background-color':'#ffe5e5'}" >
 										<td class="text-center">
 											{{proyecto.nombre}}
@@ -104,10 +97,6 @@
 										<td class="text-center">
 											<p> <a title="Consultar proyecto" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-proyect/{{proyecto._id}} "></a></p>
 											 <!--glyphicon glyphicon-list-alt-->
-										</td>
-										<td class="text-center">
-											<p title="Editar Proyecto" class="glyphicon glyphicon-edit GlyphButton" data-ng-click="ModalProyectoOpen( '{{proyecto._id}}' )"></p>
-											<p title="Eliminar proyecto" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click=" borrarProyecto($event, '{{proyecto._id}}', '{{proyecto.nombre}}')"></p>
 										</td>
 									</tr>
 								</table>
