@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+	errorHandler = require('./errors.server.controller'),
 	Privilegio = mongoose.model('Privilegios'),
     _ = require('lodash');
 
@@ -11,19 +12,23 @@ var mongoose = require('mongoose'),
  * Create a Privilegio
  */
 exports.create = function(req, res) {
-	var valores = req.body;
-	res.jsonp(valores);
-	/*
-	var consulta = new Privilegio();
-	consulta.save();
-	*/
+	var consulta = new Privilegio(req.body);
+	consulta.save( function(err) {
+		if(err){
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		}else{
+			res.jsonp(consulta);
+		}
+	});
 };
 
 /**
  * Show the current Privilegio
  */
 exports.read = function(req, res) {
-
+	res.jsonp(req.profile);
 };
 
 /**
@@ -45,4 +50,15 @@ exports.delete = function(req, res) {
  */
 exports.list = function(req, res) {
 
+};
+
+exports.getUserPrivilege = function(req, res, next, id) {
+	Privilegio.find({
+		usuario: id
+	}).exec(function(err, priv) {
+		if (err) return next(err);
+		if (!priv) return next(new Error('Failed to load privilege with user ' + id));
+		req.profile = priv;
+		next();
+	});
 };

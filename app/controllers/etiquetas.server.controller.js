@@ -57,13 +57,6 @@ exports.read = function(req, res) {
 
 
 /**
- * Update a Etiqueta
- */
-exports.update = function(req, res) {
-
-};
-
-/**
  * Delete an Etiqueta
  */
 exports.delete = function(req, res) {
@@ -83,11 +76,4 @@ exports.delete = function(req, res) {
 			}
 		});
 	});
-};
-
-/**
- * List of Etiquetas
- */
-exports.list = function(req, res) {
-
 };

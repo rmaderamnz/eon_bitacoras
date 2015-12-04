@@ -1,6 +1,5 @@
 <section data-ng-controller="AdminUsuariosController">
 	<div class="panel panel-default" style="overflow: hidden;">
-
 		<div class="panel-heading" >
 			<h1 class="panel-title">Administracion de usuarios</h1>						
 		</div>
@@ -10,7 +9,10 @@
 				<div class="panel-heading" >
 					<h3 class="panel-title">Lista de usuarios</h3>	
 				</div>
-				<table class="table table-striped">
+				<div ng-show="loadusers" layout="row" layout-sm="column" layout-align="space-around">
+					<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+				</div>
+				<table class="table table-striped" ng-hide="loadusers">
 					<th>Usuario</th>
 					<th>Nombre</th>
 					<th>Correo</th>
@@ -40,15 +42,79 @@
 				<div class="container" ng-show="nombre_usuario=== 'N/A'">
 					<small>No se ha seleccionado un usuario</small>					
 				</div>
-				<div class="container col-md-12" ng-show="nombre_usuario!= 'N/A'">
+				<div class="container col-md-12" ng-hide="nombre_usuario=== 'N/A'">
 					<small> Privilegios de {{nombre_usuario}}:</small>			
 					<table class="table table-striped">
-						<th>Area</th>
+						<th>Modulo</th>
 						<th>Privilegios</th>
 						<th>Quitar</th>
+						<tr ng-repeat="privilegio in lista_privilegios">
+							<td>{{privilegio.modulo.nombre}}</td>		
+							<td>
+								<ul>
+									<li ng-show="privilegio.privilegios.create"> Escritura </li>
+									<li ng-show="privilegio.privilegios.read"> Lectura </li>
+									<li ng-show="privilegio.privilegios.update === true"> Edicion </li>
+									<li ng-show="privilegio.privilegios.update.data"> Edicion de datos </li>
+									<li ng-show="privilegio.privilegios.update.users"> Edicion de usuarios y proyectos </li>
+									<li ng-show="privilegio.privilegios.update.status"> Edicion de estado </li>
+									<li ng-show="privilegio.privilegios.delete"> Borrar </li>
+								</ul>
+							</td>
+							<td></td>		
+						</tr>
 					</table>
 					<button class="btn btn-default btn-sm" ng-click="ModalPrivilegiosOpen()"><span class="glyphicon glyphicon-plus" style="color:green" ></span> Agregar privilegios</button>
 				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="panel panel-default" ng-hide="nombre_usuario === 'N/A'">
+		<div class="panel-heading" >
+			<h1 class="panel-title">Tareas de NombreUsuario</h1>
+		</div>
+		<div class="panel-body">
+			<div ng-show="loading" layout="row" layout-sm="column" layout-align="space-around">
+				<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+			</div>
+			<div class="col-md-12" ng-hide="loading">
+				<table class="table table-striped">
+					<th>Nombre</th>
+					<th>Estado</th>
+					<th>Tipo</th>
+					<th>Usuarios</th>
+					<th>Proyectos</th>
+					<th class="text-center">Creacion</th>
+					<th class="text-center">Consultar</th>
+					<tr ng-repeat="tarea in tareas" ng-style="!tarea.publico && {'background-color':'#ffe5e5'}" >
+						<td>
+							{{tarea.nombre}}
+						</td>
+						<td>
+							{{tarea.status}}
+						</td>
+						<td>
+							{{tarea.tipo}}
+						</td>
+						<td>
+							<ul>
+								<li ng-repeat="usuario in tarea.usuarios_asignados"> {{usuario.nombre}}</li>
+							</ul>
+						</td>
+						<td>
+							<ul>
+								<li ng-repeat="proyecto in tarea.proyectos"> {{proyecto.nombre}}</li>
+							</ul>
+						</td>
+							<td class="text-center">
+								{{tarea.creacion | date:'yyyy-MM-dd hh:mm'}}
+							</td>
+						<td class="text-center">
+							<p> <a title="Ver datos de la tarea" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-tarea/{{tarea._id}} "></a></p>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

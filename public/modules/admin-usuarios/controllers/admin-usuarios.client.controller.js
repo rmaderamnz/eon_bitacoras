@@ -4,16 +4,34 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 	function($scope, $http, $uibModal, $log, $location, Authentication) {
 		$scope.authentication = Authentication;
 		$scope.usuarios = [];
+		$scope.tareas = [];
 		$scope.lista_privilegios = [];
+		$scope.id_usuario = '';
 		$scope.nombre_usuario = 'N/A';
+		$scope.loading = true;
+		$scope.loadusers = true;
 
 		if (!$scope.authentication.user){
 			$location.path('/login');
 		} 
 
 		$scope.setPrivilegios = function( id_user , name_user){
+			$scope.loading = true;
+			$scope.id_usuario = id_user;
 			$scope.nombre_usuario = name_user;
+			$http.post('/tareas/user/asigned/' + id_user ).success(function(response) {
+			 	$scope.tareas = response;
+			 	$scope.loading = false;
+			}).error(function(response) {
+				$scope.error = response.message;
+			});
 
+			$http.post('/privilegios/' + id_user ).success(function(response) {
+				//console.log(response);
+			 	$scope.lista_privilegios = response;
+			}).error(function(response) {
+				$scope.error = response.message;
+			});
 		};
 
 		//MODALES
@@ -33,29 +51,6 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 						});
 					};
 
-
-					$scope.addModulos = function(){
-						 $http.get('/users/list' ).success(function(response) {
-								for(var k in response) {
-									$scope.usuarios.push(response[k]);
-								}
-						}).error(function(response) {
-							$scope.error = response.message;
-						});
-					};
-
-					/*
-					$scope.getUsuarios = function(){
-						 $http.get('/users/list' ).success(function(response) {
-								for(var k in response) {
-									$scope.usuarios.push(response[k]);
-								}
-						}).error(function(response) {
-							$scope.error = response.message;
-						});
-					};
-					*/
-
 					$scope.cancel = function () {
 					    $uibModalInstance.dismiss('cancel');
 					 };
@@ -71,6 +66,7 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 	    uibModalInstance.result.then(function (selectedItem) {
 			$scope.selected = selectedItem;
 	    	}, function () {
+	    		$scope.getUsuarios();
 	      		//$log.info('Modal dismissed at: ' + new Date());
 	    	});
 	  	};
@@ -78,46 +74,59 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 
 	  	//Modal de privilegios
 	  	$scope.ModalPrivilegiosOpen = function () {
+	  		var id_user = $scope.id_usuario;
+	  		var username = $scope.nombre_usuario;
 
 		    var uibModalInstance = $uibModal.open({
 		    	animation: true,
 				templateUrl: 'modules/admin-usuarios/views/modal-setpermission.client.view.html',
 				controller: function($scope, $uibModalInstance){
+					//console.log(username);
+					//console.log(id_user);
+					$scope.usuario = {id : id_user, nombre : username};
+					$scope.modulos = [];
+					$scope.modulo_tareas = false;
+					$scope.privilegios = [];
 
-					$scope.reference = 'modulos';
-
-					$scope.checkModel = { //Privilegios
-					    create: false,
-					    read: false,
-					    update: false,
-					    delete: false
-					};
-
-
-					$scope.savePrivilegios = function(){
-						//var param = [$scope.checkModel, $scope.reference];
-						var param = {permisos : $scope.checkModel , referencia: $scope.reference };
-						 $http.post('privilegios/save' , param ).success(function(response) {
-						 	console.log('Respondieron!');
-						 	console.log(response);
-								/*for(var k in response) {
-									$scope.usuarios.push(response[k]);
-								}*/
+					$scope.getModulos = function(){
+						 $http.get('/modulos' ).success(function(response) {
+						 	//console.log(response);
+							for(var k in response) {
+								$scope.modulos.push(response[k]);
+							}
 						}).error(function(response) {
 							$scope.error = response.message;
 						});
 					};
+					$scope.getModulos();
+
+					$scope.checkModulo = function(){
+						//console.log($scope.privilegios);
+						var json = JSON.parse($scope.seleccion);
+						if(json.nombre ==='Tareas'){
+							$scope.modulo_tareas = true;
+						}else{
+							$scope.modulo_tareas = false;
+						}
+						$scope.privilegios = [];
+					};
+
+					$scope.savePrivilegios = function(){
+						$scope.priv.modulo = JSON.parse($scope.seleccion);
+						$scope.priv.usuario = id_user;
+						console.log($scope.priv);
+
+						$http.post('/privilegios/save', $scope.priv ).success(function(response) {
+							console.log(response);
+							$uibModalInstance.dismiss('cancel');
+						}).error(function(response) {
+							$scope.error = response.message;
+							console.log($scope.error);
+						});
+
+					};
 
 					$scope.checkResults = [];
-
-					$scope.$watchCollection('checkModel', function () {
-					    $scope.checkResults = [];
-					    angular.forEach($scope.checkModel, function (value, key) {
-					      if (value) {
-					        $scope.checkResults.push(key);
-					      }
-					    });
-					});
 
 					$scope.cancel = function () {
 					    $uibModalInstance.dismiss('cancel');
@@ -125,15 +134,16 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 				},
 		      	resolve: {
 		        	items: function () {
-		        		console.log($scope.items);
+		        		//console.log($scope.items);
 		          		return $scope.items;
 		        	}
 		      	}
 		    });
 
 	    uibModalInstance.result.then(function (selectedItem) {
-			$scope.selected = selectedItem;
+			//$scope.selected = selectedItem;
 	    	}, function () {
+	    		$scope.setPrivilegios($scope.id_usuario, $scope.nombre_usuario);
 	      		//$log.info('Modal dismissed at: ' + new Date());
 	    	});
 	  	};//Fin modal
@@ -143,9 +153,11 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 
 		$scope.getUsuarios = function(){
 			 $http.get('/users/list' ).success(function(response) {
-					for(var k in response) {
+			 	$scope.usuarios = response;
+					/*for(var k in response) {
 						$scope.usuarios.push(response[k]);
-					}
+					}*/
+					$scope.loadusers = false;
 			}).error(function(response) {
 				$scope.error = response.message;
 			});

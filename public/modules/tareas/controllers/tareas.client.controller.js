@@ -1,7 +1,14 @@
 'use strict';
 
-angular.module('tareas').controller('TareasController', ['$scope','$uibModal','Authentication', '$http','$mdDialog', '$mdMedia', 
-	function($scope ,$uibModal, Authentication, $http, $mdDialog, $mdMedia) {
+angular.module('tareas').controller('TareasController', ['$scope', '$location' ,'$uibModal','Authentication', '$http','$mdDialog', '$mdMedia','Privilegios',
+	function($scope, $location ,$uibModal, Authentication, $http, $mdDialog, $mdMedia, Privilegios) {
+
+		$scope.permisos = Privilegios;
+		$scope.authentication = Authentication;
+
+		if (!$scope.authentication.user){
+			$location.path('/login');
+		}
 
 		$scope.loading = true;
 		$scope.estados = ['Espera','Proceso','Pausa','Terminada','Cancelada'];

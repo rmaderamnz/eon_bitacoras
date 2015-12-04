@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', '$uibModal', '$stateParams', '$http',
-	function($scope, $uibModal, $stateParams, $http) {
+angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', '$uibModal', '$stateParams', '$http', 'Privilegios',
+	function($scope, $uibModal, $stateParams, $http, Privilegios) {
 
 		$scope.proyecto = [];
 		$scope.etiquetas = [];
@@ -11,6 +11,8 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 		$scope.volver = function(){
 			window.history.back();
 		};
+
+		$scope.permisos = Privilegios;
 
 		$scope.getInfoProyecto = function(){
 			 $http.post('/proyectos/' + $stateParams.proyectoId ).success(function(response) {

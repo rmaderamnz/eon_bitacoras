@@ -11,13 +11,13 @@
 					<fieldset>
 						<legend>Datos Generales:</legend>
 						<label>Nombre</label>
-						<input class="form-control" value="{{tarea.nombre}}" ng-model="tarea.nombre" ng-change="habilitarEdicion()">
+						<input class="form-control" value="{{tarea.nombre}}" ng-model="tarea.nombre" ng-readonly="!permisos.verificarPrivilegio('Tareas','update','data')" ng-change="habilitarEdicion()">
 						<label>Descripcion</label>
-						<textarea class="form-control" style="width:100%" ng-model="tarea.descripcion" ng-change="habilitarEdicion()" > {{tarea.descripcion}} </textarea> 
+						<textarea class="form-control" style="width:100%" ng-model="tarea.descripcion" ng-readonly="!permisos.verificarPrivilegio('Tareas','update','data')" ng-change="habilitarEdicion()" > {{tarea.descripcion}} </textarea> 
 						<br>
 						<div ng-class=" (tarea.status =='Terminada' || tarea.status =='Cancelada') ? '' : 'col-md-6' ">
 							<label>Tipo</label>
-							<select class="form-control" ng-change="habilitarEdicion()" ng-model="tarea.tipo">
+							<select class="form-control" ng-change="habilitarEdicion()" ng-model="tarea.tipo" ng-disabled="!permisos.verificarPrivilegio('Tareas','update','data')">
 								<option value="Planificada">Planificada</option>
 								<option value="Mejora">Mejora</option>
 								<option value="Correccion">Correccion</option>
@@ -25,7 +25,7 @@
 						</div>
 						<div class="col-md-6" ng-show="tarea.status !='Terminada' && tarea.status !='Cancelada'">
 							<label>Estado</label>
-							<select class="form-control" ng-change="habilitarEdicion()" ng-model="tarea.status" >
+							<select class="form-control" ng-change="habilitarEdicion()" ng-model="tarea.status" ng-disabled="!permisos.verificarPrivilegio('Tareas','update','status')" >
 								<option value="Espera">En espera</option>
 								<option value="Proceso">En proceso</option>
 								<option value="Pausa">En pausa</option>
@@ -41,8 +41,12 @@
 							<br>
 						</div>
 						<div class="row" ng-show="tarea.status !='Terminada' && tarea.status !='Cancelada'">
-							<md-button class="md-raised md-primary pull-right" ng-click="finalizarTarea('Terminada')"> <span class="glyphicon glyphicon-ok-circle GlyphButton"></span> Terminar</md-button>
-							<md-button class="md-raised md-danger pull-right" ng-click="finalizarTarea('Cancelada')"> <span class="glyphicon glyphicon-remove-circle GlyphButton"></span> Cancelar</md-button>
+							<md-button class="md-raised md-primary pull-right" ng-click="finalizarTarea('Terminada')" ng-show="permisos.verificarPrivilegio('Tareas','update','status')"> 
+								<span class="glyphicon glyphicon-ok-circle GlyphButton"></span> Terminar
+							</md-button>
+							<md-button class="md-raised md-danger pull-right" ng-click="finalizarTarea('Cancelada')" ng-show="permisos.verificarPrivilegio('Tareas','delete')"> 
+								<span class="glyphicon glyphicon-remove-circle GlyphButton"></span> Cancelar
+							</md-button>
 						</div>
 					</fieldset>
 				</div>
@@ -84,7 +88,7 @@
 						<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 					</div>
 					<div ng-hide="loading">
-						<div class="row">
+						<div class="row" ng-show="permisos.verificarPrivilegio('Tareas','update','users')">
 							<md-switch ng-model="asignar" aria-label="Switch 1" class="md-block"> 
 								<b ng-show="asignar">Edicion de usuarios y proyectos habilitada </b>
 								<b ng-show="!asignar">Edicion de usuarios y proyectos deshabilitada</b>

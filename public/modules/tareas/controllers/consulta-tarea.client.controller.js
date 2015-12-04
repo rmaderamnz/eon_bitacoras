@@ -1,7 +1,14 @@
 'use strict';
 
-angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$uibModal', '$stateParams', '$http', '$mdDialog',
-	function($scope, $uibModal, $stateParams, $http, $mdDialog ) {
+angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$location', '$uibModal', '$stateParams', '$http', '$mdDialog','Authentication','Privilegios',
+	function($scope, $location, $uibModal, $stateParams, $http, $mdDialog , Authentication, Privilegios) {
+
+		$scope.permisos = Privilegios;
+		$scope.authentication = Authentication;
+
+		if (!$scope.authentication.user){
+			$location.path('/login');
+		}
 
 		$scope.tarea = [];
 		$scope.tarea_aux = [];
