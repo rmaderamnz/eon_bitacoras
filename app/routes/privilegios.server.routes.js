@@ -7,5 +7,9 @@ module.exports = function(app) {
 	app.route('/privilegios/:PrivUserId')
 		.post(privilegios.read);
 
+	app.route('/privilegios/delete/:PrivId')
+		.delete(privilegios.delete);
+
 	app.param('PrivUserId', privilegios.getUserPrivilege);
+	app.param('PrivId', privilegios.getPrivById);
 };

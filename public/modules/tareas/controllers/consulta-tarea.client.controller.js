@@ -43,6 +43,8 @@ angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$loca
 
 		$scope.guardarCambios = function(){
 			$http.put('/tareas/' + $stateParams.taskId , $scope.tarea).success(function(response) {
+				$scope.Cambios = false;
+				$scope.tarea = response;
 				$scope.tarea_aux = angular.copy($scope.tarea);
 				var alert = $mdDialog.alert()
 					.title('Exito')

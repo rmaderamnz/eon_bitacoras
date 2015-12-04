@@ -20,7 +20,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$http','Authen
 							}
 						}
 					}
-					console.log($scope.modulos);
+					//console.log($scope.modulos);
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
@@ -37,7 +37,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$http','Authen
 					$scope.error = response.message;
 				});
 			}else{
-				console.log('Destruyendo privilegios');
+				//console.log('Destruyendo privilegios');
 				Privilegios.flush();
 			}
 	    };

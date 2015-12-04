@@ -32,7 +32,7 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 		$scope.getProyectos();
 
 		$scope.borrarProyecto = function(ev, idProyecto, nombreProyecto) {
-			console.log(idProyecto);
+			//console.log(idProyecto);
 		    var alert = $mdDialog.confirm()
 		        .title('Borrar proyecto')
 		        .content('¿Desea borrar permanentemente el proyecto "'+nombreProyecto+'"? ')

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope','$http', '$uibModal','$log','$location', 'Authentication',
-	function($scope, $http, $uibModal, $log, $location, Authentication) {
+angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope','$http', '$uibModal','$mdDialog','$log','$location', 'Authentication',
+	function($scope, $http, $uibModal, $mdDialog, $log, $location, Authentication) {
 		$scope.authentication = Authentication;
 		$scope.usuarios = [];
 		$scope.tareas = [];
@@ -33,6 +33,49 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 				$scope.error = response.message;
 			});
 		};
+
+		$scope.borrarPrivilegio = function(idPrivilegio){
+
+			var alert = $mdDialog.confirm()
+		        .title('Quitar privilegios')
+		        .content('¿Desea remover los privilegios al usuario ' + $scope.nombre_usuario + '? ')
+		        .ok('Si')
+		        .cancel('No');
+		    $mdDialog
+		        .show( alert )
+		        .then(function() {
+		        	$http.delete('/privilegios/delete/' + idPrivilegio ).success(function(response) {
+		        		alert = $mdDialog.alert()
+					        .title('Privilegios removidos')
+					        .content('Los privilegios fueron removidos con exito')
+					        .ok('Cerrar');
+					   	$mdDialog
+							.show( alert )
+							.finally(function() {
+								alert = undefined;
+							});
+						$scope.setPrivilegios($scope.id_usuario, $scope.nombre_usuario);
+					}).error(function(response) {
+
+						console.log(response);
+						alert = $mdDialog.alert()
+					        .title('Error')
+					        .content('Ha ocurrido un error')
+					        .ok('Cerrar');
+					    $mdDialog
+							.show( alert )
+							.finally(function() {
+								alert = undefined;
+							});
+					});
+					 
+		        }, function(){
+		        	//No
+		          	
+		        });
+		};
+
+		//   /privilegios/delete/:PrivId
 
 		//MODALES
 		$scope.ModalUsuariosOpen = function () {
@@ -114,10 +157,10 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 					$scope.savePrivilegios = function(){
 						$scope.priv.modulo = JSON.parse($scope.seleccion);
 						$scope.priv.usuario = id_user;
-						console.log($scope.priv);
+						//console.log($scope.priv);
 
 						$http.post('/privilegios/save', $scope.priv ).success(function(response) {
-							console.log(response);
+							//console.log(response);
 							$uibModalInstance.dismiss('cancel');
 						}).error(function(response) {
 							$scope.error = response.message;

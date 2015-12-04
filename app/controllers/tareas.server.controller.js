@@ -74,7 +74,7 @@ exports.getByAsignedUser = function(req, res, next, AsignedUserId) {
 
 
 exports.getList = function(req, res) {
-	Tarea.find().exec(function(err, tasks){
+	Tarea.find({status : { $nin : ['Terminada','Cancelada']}}).exec(function(err, tasks){
 		if (err) {
 			return res.status(400).send({
 				message: 'Ocurrio un error'//errorHandler.getErrorMessage(err)

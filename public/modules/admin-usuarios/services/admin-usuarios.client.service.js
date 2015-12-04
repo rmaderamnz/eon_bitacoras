@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('admin-usuarios').factory('AdminUsuarios', [
+angular.module('core').factory('AdminUsuarios', [
 	function() {
-		// Admin usuarios service logic
+		// Modulo service logic
 		// ...
 
 		// Public API

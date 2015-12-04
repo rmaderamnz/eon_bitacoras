@@ -43,6 +43,9 @@
 												{{tarea.nombre}}
 											</td>
 											<td>
+												<span class="glyphicon glyphicon-time" ng-show="tarea.status === 'Espera'"></span>
+												<span class="glyphicon glyphicon-play-circle" ng-show="tarea.status === 'Proceso'"></span>
+												<span class="glyphicon glyphicon-pause" ng-show="tarea.status === 'Pausa'"></span>
 												{{tarea.status}}
 											</td>
 											<td>

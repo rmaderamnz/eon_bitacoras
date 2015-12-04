@@ -43,6 +43,22 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 
+	Privilegio.findOne({
+		_id: req.params.PrivId
+	}).exec(function(err, priv) {
+		if (err) { return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			}); }
+		priv.remove(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(priv);
+			}
+		});
+	});
 };
 
 /**
@@ -50,6 +66,18 @@ exports.delete = function(req, res) {
  */
 exports.list = function(req, res) {
 
+};
+
+
+exports.getPrivById = function(req, res, next, id) {
+	Privilegio.findOne({
+		_id: id
+	}).exec(function(err, priv) {
+		if (err) return next(err);
+		if (!priv) return next(new Error('Failed to load privilege with user ' + id));
+		req.profile = priv;
+		next();
+	});
 };
 
 exports.getUserPrivilege = function(req, res, next, id) {

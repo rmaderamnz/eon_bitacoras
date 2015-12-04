@@ -1,11 +1,14 @@
 <section data-ng-controller="AuthenticationController">
-	<div class="container jumbotron" style="padding-top: 16px;">
+	<div class="container" style="padding-top: 16px;">
 	    <form class="form-signin" ng-submit="signin()">
 	    <div class="alert alert-danger" ng-show="has_error" ng-animate="'animate'" >
 		  <strong>Error de inicio de sesion: </strong> <br> {{error}}
 		</div>
+			<div class="row text-center">
+				<img alt="EON Core" src="modules/core/img/Logotipo.svg" />
+			</div>
 	        <h2 class="form-signin-heading text-center">Inicio de sesion</h2>
-	        <div class="logContainer col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-4">
+	        <div class="logContainer col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4 jumbotron">
 	        	<div class="form-group">
 		        	<label>Nombre de usuario:</label>
 			        <input id="inputUser" name="username" class="form-control" data-ng-model="credentials.username" placeholder="Usuario" required autofocus>

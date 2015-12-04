@@ -14,8 +14,8 @@ angular.module('admin-usuarios').factory('Privilegios', [
 				this.permisos = privilegios;
 			},
 			getPermisos : function(){
-				console.log('Llamada de valores');
-				console.log(this.permisos);
+				//console.log('Llamada de valores');
+				//console.log(this.permisos);
 				return this.permisos;
 			},
 			getAsignacion : function (){

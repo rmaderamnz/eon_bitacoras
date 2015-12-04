@@ -29,7 +29,6 @@
 						</td>
 						<td class="text-center">
 							<p title="Consulta privilegios" class="glyphicon glyphicon-list GlyphButton" ng-click="setPrivilegios( '{{usuario._id}}' , '{{ usuario.firstName }} {{ usuario.lastName }}' )"></p>
-							<p title="Eliminar usuario" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ></p>
 						</td>
 					</tr>
 				</table>					
@@ -61,7 +60,9 @@
 									<li ng-show="privilegio.privilegios.delete"> Borrar </li>
 								</ul>
 							</td>
-							<td></td>		
+							<td> 
+								<p title="Eliminar usuario" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="borrarPrivilegio('{{ privilegio._id }}')" ></p>
+							</td>		
 						</tr>
 					</table>
 					<button class="btn btn-default btn-sm" ng-click="ModalPrivilegiosOpen()"><span class="glyphicon glyphicon-plus" style="color:green" ></span> Agregar privilegios</button>
