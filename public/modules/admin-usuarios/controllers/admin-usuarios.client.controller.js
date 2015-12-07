@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope','$http', '$uibModal','$mdDialog','$log','$location', 'Authentication',
-	function($scope, $http, $uibModal, $mdDialog, $log, $location, Authentication) {
+angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope','$http', '$uibModal','$mdDialog','$log','$location', 'Authentication','Privilegios',
+	function($scope, $http, $uibModal, $mdDialog, $log, $location, Authentication, Privilegios) {
 		$scope.authentication = Authentication;
 		$scope.usuarios = [];
 		$scope.tareas = [];
@@ -10,6 +10,7 @@ angular.module('admin-usuarios').controller('AdminUsuariosController', ['$scope'
 		$scope.nombre_usuario = 'N/A';
 		$scope.loading = true;
 		$scope.loadusers = true;
+		$scope.permisos = Privilegios;
 
 		if (!$scope.authentication.user){
 			$location.path('/login');

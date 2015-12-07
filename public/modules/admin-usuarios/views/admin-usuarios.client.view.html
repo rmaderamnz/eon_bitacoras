@@ -32,7 +32,7 @@
 						</td>
 					</tr>
 				</table>					
-				<button class="btn btn-default" ng-click="ModalUsuariosOpen()"><span class="glyphicon glyphicon-user"></span> Registrar usuario</button>
+				<button class="btn btn-default" ng-click="ModalUsuariosOpen()"><span class="glyphicon glyphicon-user" ng-show="permisos.verificarPrivilegio('Usuarios','create')"></span> Registrar usuario</button>
 			</div>
 			<div class="col-md-6">
 				<div class="panel-heading">
@@ -60,12 +60,12 @@
 									<li ng-show="privilegio.privilegios.delete"> Borrar </li>
 								</ul>
 							</td>
-							<td> 
-								<p title="Eliminar usuario" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="borrarPrivilegio('{{ privilegio._id }}')" ></p>
+							<td ng-show="permisos.verificarPrivilegio('Usuarios','delete')"> 
+								<p title="Eliminar privilegio" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="borrarPrivilegio('{{ privilegio._id }}')" ></p>
 							</td>		
 						</tr>
 					</table>
-					<button class="btn btn-default btn-sm" ng-click="ModalPrivilegiosOpen()"><span class="glyphicon glyphicon-plus" style="color:green" ></span> Agregar privilegios</button>
+					<button class="btn btn-default btn-sm" ng-click="ModalPrivilegiosOpen()" ng-show="permisos.verificarPrivilegio('Usuarios','create')"><span class="glyphicon glyphicon-plus" style="color:green" ></span> Agregar privilegios</button>
 				</div>
 			</div>
 
