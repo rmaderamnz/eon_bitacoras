@@ -4,35 +4,33 @@
 			<h3 class="modal-title">Nuevo usuario</h3>
 		</div>
 	    <div class="modal-body">
-		   	<div class="form-group col-md-12">
-				<div class="form-group">
-					<label for="firstName">Nombre</label>
-					<input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="Nombre">
-				</div>
-				<div class="form-group">
-					<label for="lastName">Apellidos</label>
-					<input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="Apellidos">
-				</div>
-				<div class="form-group">
-					<label for="email">Correo</label>
-					<input type="email" id="email" name="email" class="form-control" data-ng-model="credentials.email" placeholder="Correo">
-				</div>
-				<div class="form-group">
-					<label for="username">Nombre usuario</label>
-					<input type="text" id="username" name="username" class="form-control" data-ng-model="credentials.username" placeholder="Nombre de usuario">
-				</div>
-				<div class="form-group">
-					<label for="password">Contraseña</label>
-					<input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Contraseña">
-				</div>
-				<div data-ng-show="error" class="text-center text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
+	    	<div class="form-group">
+				<label for="firstName">Nombre</label>
+				<input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="Nombre">
+			</div>
+			<div class="form-group">
+				<label for="lastName">Apellidos</label>
+				<input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="Apellidos">
+			</div>
+			<div class="form-group">
+				<label for="email">Correo</label>
+				<input type="email" id="email" name="email" class="form-control" data-ng-model="credentials.email" placeholder="Correo">
+			</div>
+			<div class="form-group">
+				<label for="username">Nombre usuario</label>
+				<input type="text" id="username" name="username" class="form-control" data-ng-model="credentials.username" placeholder="Nombre de usuario">
+			</div>
+			<div class="form-group">
+				<label for="password">Contraseña</label>
+				<input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Contraseña">
+			</div>
+			<div data-ng-show="error" class="text-center text-danger">
+				<strong data-ng-bind="error"></strong>
 			</div>
 		</div>
 		<div class="modal-footer">
+			<button class="btn btn-danger" type="button" ng-click="cancel()">Cancelar</button>
 			<button class="btn btn-primary" type="submit">Ingresar usuario</button>
-			<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 		</div>
 	</form>
 </section>

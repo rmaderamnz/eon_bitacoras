@@ -7,7 +7,6 @@
 			<div class="row text-center">
 				<img alt="EON Core" src="modules/core/img/Logotipo.svg" />
 			</div>
-			
 			<uib-tabset type="pills">
 				<uib-tab heading="Tareas">
 					<!--Tareas-->
@@ -18,56 +17,64 @@
 						<div class="panel-body">
 							<uib-tabset>
 								<uib-tab select="cargarDatos(0,1)" heading="Tareas asignadas"></uib-tab>
-								<uib-tab select="cargarDatos(0,2)" heading="Tareas creadas"></uib-tab>
+								<uib-tab select="cargarDatos(0,2)" heading="Tareas creadas" ng-show="permisos.verificarPrivilegio('Tareas','create')"></uib-tab>
 							</uib-tabset>
 							<div ng-show="loading" layout="row" layout-sm="column" layout-align="space-around">
 								<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 							</div>
 							<div class="col-md-12" ng-hide="loading">
-								<table class="table table-striped">
-									<th>Nombre</th>
-									<th>Estado</th>
-									<th>Tipo</th>
-									<th>Usuarios</th>
-									<th>Proyectos</th>
-									<th class="text-center">Creacion</th>
-									<th class="text-center">Consultar</th>
-									<!--Opciones para administrador-->
-									<!--<th class="text-center">Acciones</th>-->
-									<tr ng-repeat="tarea in tareas" ng-style="!tarea.publico && {'background-color':'#ffe5e5'}" >
-										<td>
-											{{tarea.nombre}}
-										</td>
-										<td>
-											{{tarea.status}}
-										</td>
-										<td>
-											{{tarea.tipo}}
-										</td>
-										<td>
-											<ul>
-												<li ng-repeat="usuario in tarea.usuarios_asignados"> {{usuario.nombre}}</li>
-											</ul>
-										</td>
-										<td>
-											<ul>
-												<li ng-repeat="proyecto in tarea.proyectos"> {{proyecto.nombre}}</li>
-											</ul>
-										</td>
-										<td class="text-center">
-											{{tarea.creacion | date:'yyyy-MM-dd hh:mm'}}
-										</td>
-										<td class="text-center">
-											<p> <a title="Ver datos de la tarea" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-tarea/{{tarea._id}} "></a></p>
-										</td>
-									</tr>
-								</table>
+								<div class="row" style="padding: 15px">
+									<div class="col-md-12 text-center" ng-show="permisos.verificarPrivilegio('Tareas','create') && taskview ===2"> 
+										<button class="btn btn-primary" data-ng-click="ModalTareasOpen()">Crear nueva tarea</button> 
+									</div>
+								</div>
+									<table class="table table-striped">
+										<th>Nombre</th>
+										<th>Estado</th>
+										<th>Tipo</th>
+										<th>Usuarios</th>
+										<th>Proyectos</th>
+										<th class="text-center">Creacion</th>
+										<th class="text-center">Consultar</th>
+										<!--Opciones para administrador-->
+										<!--<th class="text-center">Acciones</th>-->
+										<tr ng-repeat="tarea in tareas" ng-style="!tarea.publico && {'background-color':'#ffe5e5'}" >
+											<td>
+												{{tarea.nombre}}
+											</td>
+											<td>
+												<span class="glyphicon glyphicon-time" ng-show="tarea.status === 'Espera'"></span>
+												<span class="glyphicon glyphicon-play-circle" ng-show="tarea.status === 'Proceso'"></span>
+												<span class="glyphicon glyphicon-pause" ng-show="tarea.status === 'Pausa'"></span>
+												{{tarea.status}}
+											</td>
+											<td>
+												{{tarea.tipo}}
+											</td>
+											<td>
+												<ul>
+													<li ng-repeat="usuario in tarea.usuarios_asignados"> {{usuario.nombre}}</li>
+												</ul>
+											</td>
+											<td>
+												<ul>
+													<li ng-repeat="proyecto in tarea.proyectos"> {{proyecto.nombre}}</li>
+												</ul>
+											</td>
+											<td class="text-center">
+												{{tarea.creacion | date:'yyyy-MM-dd hh:mm'}}
+											</td>
+											<td class="text-center">
+												<p> <a title="Ver datos de la tarea" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-tarea/{{tarea._id}} "></a></p>
+											</td>
+										</tr>
+									</table>
 							</div>
 						</div>
 					</div>
 						
 				</uib-tab>
-				<uib-tab select="cargarDatos(1)" heading="Proyectos">
+				<uib-tab select="cargarDatos(1)" heading="Proyectos" ng-show="permisos.verificarPrivilegio('Proyectos','read')">
 					<!--Proyectos-->
 					<div class="panel panel-default">
 						<div class="panel-heading" >
@@ -106,6 +113,5 @@
 				</uib-tab>
 			</uib-tabset>
 		</div>
-		
 	</div>
 </section>

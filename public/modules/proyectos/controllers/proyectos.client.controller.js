@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('proyectos').controller('ProyectosController', ['$scope','$uibModal', '$http','$mdDialog', '$mdMedia', 
-	function($scope, $uibModal, $http, $mdDialog, $mdMedia) {
+angular.module('proyectos').controller('ProyectosController', ['$scope','$uibModal', '$http','$mdDialog', '$mdMedia', 'Privilegios',
+	function($scope, $uibModal, $http, $mdDialog, $mdMedia, Privilegios) {
 		$scope.proyectos = [];
 		$scope.loading = true;
+		$scope.permisos = Privilegios;
 
 		$scope.getProyectos = function(){
 			 $http.get('/proyectos/list' ).success(function(response) {
@@ -31,7 +32,7 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 		$scope.getProyectos();
 
 		$scope.borrarProyecto = function(ev, idProyecto, nombreProyecto) {
-			console.log(idProyecto);
+			//console.log(idProyecto);
 		    var alert = $mdDialog.confirm()
 		        .title('Borrar proyecto')
 		        .content('¿Desea borrar permanentemente el proyecto "'+nombreProyecto+'"? ')

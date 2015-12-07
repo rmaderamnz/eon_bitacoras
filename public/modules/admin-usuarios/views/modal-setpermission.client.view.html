@@ -4,38 +4,44 @@
 			<h3 class="modal-title">Asignar permisos</h3>
 		</div>
 	    <div class="modal-body">
-		   	<div class="form-group container">
-				<div class="form-group">
-					<label>Privilegios:</label>&nbsp;
-					 <div class="btn-group"> 
-				        <input type="checkbox" ng-model="checkModel.create" uib-btn-checkbox>&nbsp;Creacion</label> 
-				        <input type="checkbox" ng-model="checkModel.read" uib-btn-checkbox>&nbsp;Lectura</label>
-				        <input type="checkbox" ng-model="checkModel.update" uib-btn-checkbox>&nbsp;Modificacion</label>
-				        <input type="checkbox" ng-model="checkModel.delete" uib-btn-checkbox>&nbsp;Borrar</label>
-				    </div>
-				    <div class="input-group ">
-				    	<!--<label>Referencia:</label>&nbsp;-->
-				    	<uib-tabset>
-    						<uib-tab heading="Static title">Static content</uib-tab>
-    						<uib-tab heading="Static title">Static content</uib-tab>
-    						<uib-tab heading="Static title">Static content</uib-tab>
-    					</uib-tabset>
-				    	<!--<select class="form-control" id="ComboReferencias">
-						    <option>1</option>
-						    <option>2</option>
-						    <option>3</option>
-						    <option>4</option>
-					  	</select>-->
-				    </div>
-				    <div class="input-group ">
-				    	<label>Tipo de permiso:</label>&nbsp;
-				    	<select class="form-control" id="ComboTipo">
-						    <option>Acceso</option>
-						    <option>Restriccion</option>
-					  	</select>
-				    </div>
-				</div>
+	    	<div class="form-group">
+				<label>Usuario</label>
+				<input readonly class="form-control" value="{{usuario.nombre}}">
 			</div>
+	    	<div class="form-group">
+				<label>Modulo</label>
+				<select required class="form-control" ng-change="checkModulo()" ng-model="seleccion">
+					<option ng-repeat="modulo in modulos" value="{{ {id: modulo._id, nombre : modulo.nombre} }}">{{modulo.nombre}}</option>
+				</select>
+			</div>
+			<label>Privilegios: </label> <br>
+			<table ng-show="seleccion!== ''">
+				<tr>
+					<td> <md-checkbox ng-model="priv.privilegios.read" aria-label="Read">
+			        Lectura
+			        </md-checkbox> </td> 
+					<td> <md-checkbox ng-model="priv.privilegios.create" aria-label="Create">
+			        Crear
+			        </md-checkbox> </td> 
+			        <td ng-hide="modulo_tareas"> <md-checkbox ng-model="priv.privilegios.update" aria-label="Update">
+			        Actualizar
+			        </md-checkbox> </td> 
+			        <td> <md-checkbox ng-model="priv.privilegios.delete" aria-label="Delete">
+			        Borrar
+			        </md-checkbox> </td> 
+				</tr>
+				<tr ng-show="modulo_tareas">
+					<td> <md-checkbox ng-model="priv.privilegios.update.data" aria-label="Data">
+			        Actualizar datos de tarea
+			        </md-checkbox> </td> 
+			        <td> <md-checkbox ng-model="priv.privilegios.update.users" aria-label="Users">
+			        Actualizar usuarios y proyectos de tarea
+			        </md-checkbox> </td> 
+			        <td> <md-checkbox ng-model="priv.privilegios.update.status" aria-label="Status">
+			        Actualizar estado de tarea
+			        </md-checkbox> </td> 
+				</tr>
+			</table>
 		</div>
 		<div class="modal-footer">
 			<button class="btn btn-primary" type="submit">Asignar permisos</button>

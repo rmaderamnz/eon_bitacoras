@@ -5,7 +5,7 @@
 		</div>
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-12 text-center"> 
+				<div class="col-md-12 text-center" ng-show="permisos.verificarPrivilegio('Tareas','create')"> 
 					<button class="btn btn-primary" data-ng-click="ModalTareasOpen()">Crear nueva tarea</button> 
 				</div>
 			</div>
@@ -16,7 +16,7 @@
 			<div class="row">
 				<label>  Ver:</label>
 				<uib-tabset>
-					<uib-tab select="CargarTabla(0)" heading="Todas"></uib-tab>
+					<uib-tab select="CargarTabla(0)" heading="Tareas activas"></uib-tab>
 					<uib-tab select="CargarTabla(1)" heading="En Espera"></uib-tab>
 					<uib-tab select="CargarTabla(2)" heading="En Proceso"></uib-tab>
 					<uib-tab select="CargarTabla(3)" heading="En Pausa"></uib-tab>
@@ -45,6 +45,9 @@
 							{{tarea.nombre}}
 						</td>
 						<td ng-show="showstatus">
+							<span class="glyphicon glyphicon-time" ng-show="tarea.status === 'Espera'"></span>
+							<span class="glyphicon glyphicon-play-circle" ng-show="tarea.status === 'Proceso'"></span>
+							<span class="glyphicon glyphicon-pause" ng-show="tarea.status === 'Pausa'"></span>
 							{{tarea.status}}
 						</td>
 						<td>

@@ -1,7 +1,14 @@
 'use strict';
 
-angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$uibModal', '$stateParams', '$http', '$mdDialog',
-	function($scope, $uibModal, $stateParams, $http, $mdDialog ) {
+angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$location', '$uibModal', '$stateParams', '$http', '$mdDialog','Authentication','Privilegios',
+	function($scope, $location, $uibModal, $stateParams, $http, $mdDialog , Authentication, Privilegios) {
+
+		$scope.permisos = Privilegios;
+		$scope.authentication = Authentication;
+
+		if (!$scope.authentication.user){
+			$location.path('/login');
+		}
 
 		$scope.tarea = [];
 		$scope.tarea_aux = [];
@@ -36,6 +43,8 @@ angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$uibM
 
 		$scope.guardarCambios = function(){
 			$http.put('/tareas/' + $stateParams.taskId , $scope.tarea).success(function(response) {
+				$scope.Cambios = false;
+				$scope.tarea = response;
 				$scope.tarea_aux = angular.copy($scope.tarea);
 				var alert = $mdDialog.alert()
 					.title('Exito')
