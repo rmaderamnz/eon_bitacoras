@@ -37,7 +37,7 @@
 							<small>Fecha de compromiso: {{ tarea.compromiso | date:'yyyy-MM-dd' }} </small> <br>
 							<small ng-show="tarea.status =='Terminada'"> <b> Fecha de terminacion: {{ tarea.terminado | date:'yyyy-MM-dd - hh:mm:ss' }} </b> <br> </small> 
 							<small ng-show="tarea.status =='Cancelada'"> <b> Fecha de cancelacion: {{ tarea.terminado | date:'yyyy-MM-dd - hh:mm:ss' }} </b> <br> </small> 
-							<small>Creada por: {{tarea.nombreusuario}}</small>
+							<small>Creada por: {{tarea.usuario_creacion.username}}</small>
 							<br>
 						</div>
 						<div class="row" ng-show="tarea.status !='Terminada' && tarea.status !='Cancelada'">
@@ -62,7 +62,7 @@
 						<div class="container col-md-12">
 							<uib-accordion close-others="true" ng-repeat="etiqueta in etiquetas">
 								<uib-accordion-group heading="{{etiqueta.nombre}}" panel-class="{{etiqueta.tagclass}}">
-									<small><i>{{ etiqueta.creacion | date:'yyyy-MM-dd HH:mm:ss' }}</i> - <b> {{etiqueta.nombreusuario}} </b></small>
+									<small><i>{{ etiqueta.creacion | date:'yyyy-MM-dd HH:mm:ss' }}</i> - <b> {{etiqueta.usuario.username}} </b></small>
 							   		<p> {{etiqueta.contenido}} </p>
 							    	<button class="btn pull-right" ng-click="borrarEtiqueta( '{{ etiqueta._id }}' )">Descartar</button>
 								</uib-accordion-group>
@@ -98,11 +98,11 @@
 							<label> <b>Proyectos</b> </label>
 							<table class="table table-striped">
 								<th>Nombre</th>
-								<th class="text-center">Consultar</th>
+								<th class="text-center" ng-show="permisos.verificarPrivilegio('Proyectos','read')">Consultar</th>
 								<th ng-show="asignar" class="text-center">Remover</th>
 								<tr ng-repeat="proyecto in tarea.proyectos">
 									<td>{{proyecto.nombre}}</td>
-									<td class="text-center"> <p> <a title="Consultar proyecto" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-proyect/{{proyecto.id}} "></a></p> </td>
+									<td class="text-center" ng-show="permisos.verificarPrivilegio('Proyectos','read')"> <p> <a title="Consultar proyecto" class="glyphicon glyphicon-list-alt GlyphButton" href="#!/view-proyect/{{proyecto.id}} "></a></p> </td>
 									<td ng-show="asignar" class="text-center"><p title="Quitar proyecto" class="glyphicon glyphicon-remove-sign GlyphButton" style="color:red" ng-click="quitarProyecto( '{{proyecto.id}}' )"></p></td>
 								</tr>
 							</table>

@@ -33,7 +33,9 @@ exports.read = function(req, res) {
  * Show the current Proyecto
  */
 exports.getList = function(req, res) {
-	Proyecto.find().exec(function(err, proyectos){
+	Proyecto.find()
+	.populate('usuario')
+	.exec(function(err, proyectos){
 		if (err) {
 			return res.status(400).send({
 				message: 'Ocurrio un error'//errorHandler.getErrorMessage(err)
@@ -47,7 +49,8 @@ exports.getList = function(req, res) {
 exports.proyectByID = function(req, res, next, id) {
 	Proyecto.findOne({
 		_id: id
-	}).exec(function(err, proyect) {
+	}).populate('usuario')
+	.exec(function(err, proyect) {
 		if (err) return next(err);
 		if (!proyect) return next(new Error('Failed to load proyect ' + id));
 		req.profile = proyect;

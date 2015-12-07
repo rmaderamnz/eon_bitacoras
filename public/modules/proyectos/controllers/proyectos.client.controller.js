@@ -12,20 +12,10 @@ angular.module('proyectos').controller('ProyectosController', ['$scope','$uibMod
 			 	$scope.proyectos = [];
 				for(var k in response) {
 					$scope.proyectos.push(response[k]);
-					$scope.getNombreUsuario($scope.proyectos[k].usuario, k);
 				}
 				$scope.loading = false;
 			}).error(function(response) {
 				$scope.error = response.message;
-			});
-		};
-
-		$scope.getNombreUsuario = function( id , index){
-			 $http.get('/users/getUser/' + id ).success(function(response) {
-			 	$scope.proyectos[index].usuario = response.username;
-			}).error(function(response) {
-				console.log(response);
-				//$scope.error = response.message;
 			});
 		};
 

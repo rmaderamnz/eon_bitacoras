@@ -28,7 +28,8 @@ exports.create = function(req, res) {
 exports.getByProyect = function(req, res, next, proyectId) {
 	Tarea.find({
 		'proyectos.id' : proyectId} 
-		).exec(function(err, task) {
+		).populate('usuario_creacion')
+	.exec(function(err, task) {
 		if (err) return next(err);
 		if (!task) return next(new Error('Failed to load task ' + proyectId));
 		req.profile = task;
@@ -74,7 +75,8 @@ exports.getByAsignedUser = function(req, res, next, AsignedUserId) {
 
 
 exports.getList = function(req, res) {
-	Tarea.find({status : { $nin : ['Terminada','Cancelada']}}).exec(function(err, tasks){
+	Tarea.find({status : { $nin : ['Terminada','Cancelada']}})
+	.populate('usuario_creacion').exec(function(err, tasks){
 		if (err) {
 			return res.status(400).send({
 				message: 'Ocurrio un error'//errorHandler.getErrorMessage(err)
@@ -88,7 +90,8 @@ exports.getList = function(req, res) {
 exports.getByTaskId = function(req, res, next, id) {
 	Tarea.findOne({
 		_id: id
-	}).exec(function(err, task) {
+	}).populate('usuario_creacion')
+	.exec(function(err, task) {
 		if (err) return next(err);
 		if (!task) return next(new Error('Failed to load task ' + task));
 		req.profile = task;

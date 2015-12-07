@@ -26,7 +26,7 @@ angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$loca
 			 $http.post('/tareas/' + $stateParams.taskId ).success(function(response) {
 			 	//console.log(response);
 			 	$scope.tarea = response;
-			 	$scope.getNombreUsuario($scope.tarea.usuario_creacion);
+			 	//$scope.getNombreUsuario($scope.tarea.usuario_creacion);
 			 	$scope.tarea_aux = angular.copy($scope.tarea);
 				}).error(function(response) {
 			});
@@ -86,20 +86,6 @@ angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$loca
 		        });
 		};
 
-		$scope.getNombreUsuario = function( id , index , task){
-			 $http.get('/users/getUser/' + id ).success(function(response) {
-			 	if(index !== undefined){
-			 		$scope.etiquetas[index].nombreusuario = response.username;
-			 	}else{
-			 		$scope.tarea.nombreusuario = response.username;
-			 		$scope.tarea_aux.nombreusuario = response.username;
-			 	}
-			}).error(function(response) {
-				console.log(response);
-				//$scope.error = response.message;
-			});
-		};
-
 		$scope.getInfoTarea();
 
 		$scope.getEtiquetas = function(){
@@ -115,7 +101,7 @@ angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$loca
 						default:
 							response[k].tagclass = 'panel-success'; break;
 					}
-					$scope.getNombreUsuario(response[k].usuario, k);
+					//$scope.getNombreUsuario(response[k].usuario, k);
 					$scope.etiquetas.push(response[k]);
 				}
 			}).error(function(response) {
@@ -215,7 +201,10 @@ angular.module('tareas').controller('ConsultaTareaController', ['$scope', '$loca
 			$scope.tarea.proyectos = listado;
 		};
 
-		$scope.getProyectos();
+		if($scope.permisos.verificarPrivilegio('Proyectos','read')){
+			$scope.getProyectos();
+		}
+		
 
 		//usuarios
 		$scope.getUsuarios = function(){

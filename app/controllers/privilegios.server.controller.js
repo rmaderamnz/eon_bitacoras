@@ -61,9 +61,7 @@ exports.delete = function(req, res) {
 	});
 };
 
-/**
- * List of Privilegios
- */
+
 exports.list = function(req, res) {
 
 };
@@ -89,4 +87,44 @@ exports.getUserPrivilege = function(req, res, next, id) {
 		req.profile = priv;
 		next();
 	});
+};
+
+exports.checkPermiso = function(modulo, permiso, actualizacion){
+	return function(req, res, next) {
+		Privilegio.find({
+			usuario: req.user._id,
+			'modulo.nombre' : modulo
+		}).exec(function(err, priv) {
+			if (err) return res.status(401).send({
+				message: 'El usuario no cuenta con tal privilegio'
+			});
+			if (!priv) return res.status(401).send({
+				message: 'Ocurrio un error al autenticar los permisos del usuario'
+			});
+			var flag = false;
+			for( var k in priv){
+				if(actualizacion !== 'none'){
+					for( var x in priv[k].privilegios[permiso]){
+						if(priv[k].privilegios[permiso][x]){
+							flag = true;
+						}
+					}
+				}else{
+					if(priv[k].privilegios[permiso]){
+						flag = true;
+					}
+				}
+			}
+			if(flag){
+				next();
+			}else{
+				return res.status(401).send({
+					message: 'El usuario no cuenta con permisos para dicha accion'
+				});
+			}
+			
+			
+		});
+
+	};
 };

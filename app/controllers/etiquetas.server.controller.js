@@ -29,7 +29,7 @@ exports.create = function(req, res) {
 exports.getByProyect = function(req, res, next, id) {
 	Etiqueta.find({
 		proyecto: id
-	}).exec(function(err, tag) {
+	}).populate('usuario').exec(function(err, tag) {
 		if (err) return next(err);
 		if (!tag) return next(new Error('Failed to load Tag ' + id));
 		req.profile = tag;
@@ -40,7 +40,7 @@ exports.getByProyect = function(req, res, next, id) {
 exports.getByTask = function(req, res, next, id) {
 	Etiqueta.find({
 		tarea: id
-	}).exec(function(err, tag) {
+	}).populate('usuario').exec(function(err, tag) {
 		if (err) return next(err);
 		if (!tag) return next(new Error('Failed to load Tag ' + id));
 		req.profile = tag;

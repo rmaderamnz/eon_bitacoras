@@ -42,7 +42,6 @@ angular.module('admin-usuarios').factory('Privilegios', [
 									return true;
 								}
 							}
-							
 						}
 					}
 				}else{

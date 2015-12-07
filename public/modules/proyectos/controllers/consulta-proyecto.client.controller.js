@@ -17,27 +17,11 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 		$scope.getInfoProyecto = function(){
 			 $http.post('/proyectos/' + $stateParams.proyectoId ).success(function(response) {
 			 	$scope.proyecto = response;
-			 	$scope.getNombreUsuario($scope.proyecto.usuario);
+			 	//$scope.getNombreUsuario($scope.proyecto.usuario);
 				}).error(function(response) {
 			});
 		};
 
-		$scope.getNombreUsuario = function( id , index , task){
-			 $http.get('/users/getUser/' + id ).success(function(response) {
-			 	if(index !== undefined){
-			 		if(task !== undefined){
-			 			$scope.tareas[index].usuario_creacion = response.username;
-			 		}else{
-			 			$scope.etiquetas[index].nombreusuario = response.username;
-			 		}
-			 	}else{
-			 		$scope.proyecto.nombreusuario = response.username;
-			 	}
-			}).error(function(response) {
-				console.log(response);
-				//$scope.error = response.message;
-			});
-		};
 
 		$scope.getTareas = function(){
 			console.log($stateParams.proyectoId);
@@ -45,7 +29,7 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 				//console.log(response);
 				for(var k in response) {
 					$scope.tareas.push(response[k]);
-					$scope.getNombreUsuario($scope.tareas[k].usuario_creacion, k, true);
+					//$scope.getNombreUsuario($scope.tareas[k].usuario_creacion, k, true);
 				}
 				$scope.loading = false;
 				//console.log($scope.tareas);
@@ -71,7 +55,7 @@ angular.module('proyectos').controller('ConsultaProyectoController', ['$scope', 
 						default:
 							response[k].tagclass = 'panel-success'; break;
 					}
-					$scope.getNombreUsuario(response[k].usuario, k);
+					//$scope.getNombreUsuario(response[k].usuario, k);
 					$scope.etiquetas.push(response[k]);
 				}
 			}).error(function(response) {
